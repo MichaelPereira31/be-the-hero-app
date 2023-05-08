@@ -7,7 +7,7 @@ import CasesList from '../pages/CasesList';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
-function StudyTabs() {
+function CasesTabs() {
   return (
     <Navigator
       tabBarOptions={{
@@ -41,7 +41,7 @@ function StudyTabs() {
         name="CasesList"
         component={CasesList}
         options={{
-          tabBarLabel: 'Proffys',
+          tabBarLabel: 'Casos',
           tabBarIcon: ({ color, size, focused }) => {
             return (
               <Ionicons name="ios-easel" size={size} color={focused ? '#8257e5' : color} />
@@ -65,4 +65,4 @@ function StudyTabs() {
   )
 }
 
-export default StudyTabs;
+export default CasesTabs;
