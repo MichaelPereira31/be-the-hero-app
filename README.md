@@ -1,1 +1,0 @@
-# be-the-hero-app
