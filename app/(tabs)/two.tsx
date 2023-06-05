@@ -27,26 +27,26 @@ export default function TabTwoScreen() {
   );
   return (
     <View style={styles.container}>
-    <PageHeader title="Casos Favoritos" />
+      <PageHeader title="Casos Favoritos" />
 
-    <ScrollView
-      style={styles.CasesList}
-      contentContainerStyle={{
-        paddingHorizontal: 16,
-        paddingBottom: 16,
-      }}
-    >
-      {favorites.map((teacher) => {
-        return (
-          <CasosItem
-            key={teacher.id}
-            teacher={teacher}
-            favorited
-          />
-        );
-      })}
-    </ScrollView>
-  </View>
+      <ScrollView
+        style={styles.CasesList}
+        contentContainerStyle={{
+          paddingHorizontal: 16,
+          paddingBottom: 16,
+        }}
+      >
+        {favorites.map((teacher, index) => {
+          return (
+            <CasosItem
+              key={index}
+              teacher={teacher}
+              favorited
+            />
+          );
+        })}
+      </ScrollView>
+    </View>
   );
 }
 
