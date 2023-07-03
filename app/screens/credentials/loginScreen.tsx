@@ -1,16 +1,25 @@
 import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native'
 import { Text } from 'react-native';
 import { View, TextInput, StyleSheet } from 'react-native';
 import CustomButton from '../../../components/CustomButton';
+import { setToken } from '../../../services'
+import auth from '../../../utils/auth'
+import performLogin from '../../../services/auth/login'
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigation = useNavigation()
 
-  const handleLogin = () => {
-    // Aqui você pode adicionar a lógica para autenticar o usuário com o email e senha fornecidos
-    console.log('Email:', email);
-    console.log('Password:', password);
+
+  const handleLogin = async () => {
+    const { data } = await performLogin(email)
+      auth.access_token = data.auth.access_token
+      auth.refresh_token = data.auth.refresh_token
+      setToken(auth.access_token)
+      navigation.navigate('')
+  
   };
 
   return (

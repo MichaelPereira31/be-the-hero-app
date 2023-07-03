@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, Text } from 'react-native';
 import CustomButton from '../../../components/CustomButton';
+import { useNavigation } from '@react-navigation/native'
+
+import performCreate from '../../../services/create/create'
 
 const RegisterScreen = () => {
+  const navigation = useNavigation()
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleRegister = () => {
-    // Aqui você pode adicionar a lógica para registrar o usuário com os dados fornecidos
-    console.log('Name:', name);
-    console.log('Email:', email);
-    console.log('Password:', password);
+  const handleRegister = async () => {
+    const { data } = await performCreate({name, email, password})
+    navigation.navigate('')
   };
 
   return (

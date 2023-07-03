@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { View, Text, ScrollView, TextInput , StyleSheet} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import getCasos from '../../services/casos/getCasos'
+
 import mock from '../../mocks/list.json'
 //import api from '../../services/api';
 
@@ -19,7 +21,14 @@ export default function TabOneScreen() {
   const [time, setTime] = useState('');
 
   const [casos, setCasos] = useState(mock);
+  useEffect(() => {
+    fetchCasos()
+  }, [])
 
+  async function fetchCasos(query = '') {
+    const { data } = await getCasos(query)
+    setCasos(data)
+  }
   function loadFavorites() {
     AsyncStorage.getItem('favorites').then(response => {
       if (response) {
@@ -36,6 +45,7 @@ export default function TabOneScreen() {
   useFocusEffect(
     React.useCallback(() => {
       loadFavorites();
+      fetchCasos();
     }, [])
   );
 
@@ -90,6 +100,7 @@ export default function TabOneScreen() {
 
             <RectButton 
               style={styles.submitButton}
+              onPress={()=> fetchCasos()}
             >
               <Text style={styles.submitButtonText}>Filtrar</Text>
             </RectButton>
