@@ -10,7 +10,6 @@ import performLogin from '../../../services/auth/login'
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigation = useNavigation()
 
 
   const handleLogin = async () => {
@@ -18,8 +17,6 @@ const LoginScreen = () => {
       auth.access_token = data.auth.access_token
       auth.refresh_token = data.auth.refresh_token
       setToken(auth.access_token)
-      navigation.navigate('')
-  
   };
 
   return (
