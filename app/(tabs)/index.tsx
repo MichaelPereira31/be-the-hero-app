@@ -120,7 +120,7 @@ export default function TabOneScreen() {
         {casos.map((casosI) => (
         <CasosItem 
           key={casosI.id}
-          teacher={casosI}
+          casos={casosI}
           favorited={favorites.includes(casosI.id)}
         />
         ))}
@@ -145,7 +145,6 @@ const styles = StyleSheet.create({
 
   label: {
     color: '#fff',
-    fontFamily: 'Poppins_400Regular'
   },
 
   input: {
@@ -178,7 +177,6 @@ const styles = StyleSheet.create({
 
   submitButtonText: {
     color: '#fff',
-    fontFamily: 'Archivo_700Bold',
     fontSize: 16,
   },
 });
