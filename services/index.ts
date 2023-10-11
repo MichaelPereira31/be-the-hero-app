@@ -1,13 +1,15 @@
-import FetchClient from '../utils/api/impl/fetch'
+import axios, { Axios } from "axios";
 
-const api = new FetchClient('https://expensies-api.herokuapp.com')
+const api = new Axios({
+  baseURL: "http://localhost:3333",
+});
 
 export const setToken = (_token: string) => {
-  api.updateAuthToken(`Bearer ${_token}`)
-}
+  api.defaults.headers.common["Authorization"] = `Bearer ${_token}`;
+};
 
 export const removeToken = () => {
-  api.updateAuthToken('')
-}
+  api.defaults.headers.common["Authorization"] = "";
+};
 
-export default api
+export default api;

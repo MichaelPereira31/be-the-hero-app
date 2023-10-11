@@ -1,7 +1,12 @@
-import api from '..'
-import { IAuthResponse } from './@types'
-const login = async (email: string) => {
-  return await api.post<IAuthResponse>('/auth/login', { email })
+import api from "@/services";
+
+export interface ILoginPayload {
+  email: string;
+  password: string;
 }
 
-export default login
+const login = (payload: ILoginPayload) => {
+  return api.post<string>("/user/authenticate", payload);
+};
+
+export default login;
