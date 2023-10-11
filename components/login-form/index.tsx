@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { Text } from "react-native";
 import { View, TextInput, StyleSheet } from "react-native";
 
-import CustomButton from "@/components/CustomButton";
+import LoadingButton from "@/components/Buttons/LoadingButton";
 import login, { ILoginPayload } from "@/services/auth/login";
 import useAuthentication from "@/hooks/useAuthentication";
 import { useRouter } from "expo-router";
@@ -12,21 +12,19 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { setToken } = useAuthentication();
-  const { replace } = useRouter();
+  const { push } = useRouter();
 
   const handleLogin = async (values: ILoginPayload) => {
-    setIsLoading(true);
-
     if (formik.isValid) {
+      return push("/complete-registration");
+      setIsLoading(true);
       login(values)
         .then((response) => {
           setToken({ token: response.data, refreshToken: "" });
-          replace("/index");
+          push("/home");
         })
-        .finally(() => setIsLoading(false));
+        .finally(() => setTimeout(() => setIsLoading(false), 2000));
     }
-
-    setIsLoading(false);
   };
 
   const formik = useFormik<ILoginPayload>({
@@ -53,10 +51,11 @@ const LoginForm = () => {
           formik.setFieldValue("password", password)
         }
       />
-      <CustomButton
+      <LoadingButton
         title="Login"
         onPress={formik.handleSubmit}
         style={styles.button}
+        isLoading={isLoading}
       />
     </View>
   );

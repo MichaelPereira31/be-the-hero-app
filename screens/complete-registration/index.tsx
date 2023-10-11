@@ -2,87 +2,94 @@ import React, { useState } from "react";
 import { View, Image, StyleSheet, Text, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import logoMini from "../assets/images/BTH-mini.png";
+import logoMini from "@/assets/images/BTH-mini.png";
 
-import CustomButton from "../../components/CustomButton";
+import LoadingButton from "@/components/Buttons/LoadingButton";
 import { ScrollView } from "react-native-gesture-handler";
+import { useFormik } from "formik";
+import { ICreateAddressPayload } from "@/services/address/create";
+import { ICreateUserPayload } from "@/services/auth/create";
+import { getDefaultValue, getOngFieldsList, getUserFieldsList } from "./helper";
+import { ICreateOngPayload } from "@/services/ong/create";
 
-interface FormData {
-  fullName: string;
-  username: string;
-  document: string;
-  email: string;
-  phone: string;
-}
+export type ICompleteRegistrationForm = ICreateOngPayload &
+  ICreateAddressPayload &
+  Pick<ICreateUserPayload, "type">;
+
+export type ICompleteRegistrationField = keyof ICompleteRegistrationForm;
 
 const CompleteRegistration = () => {
-  const [formData, setFormData] = useState<FormData>({
-    fullName: "",
-    username: "",
-    document: "",
-    email: "",
-    phone: "",
+  const [isLoading, setIsLoading] = useState(false);
+  const [fields, setFields] = useState(getUserFieldsList());
+
+  const handleNextOrSubmit = () => {
+    if (isValid) formik.handleSubmit();
+
+    if (!isOngForm && isOngUser) setFields(getOngFieldsList());
+    else setFields(getUserFieldsList());
+  };
+
+  const handleGoBack = () => {
+    if (isOngForm) return setFields(getUserFieldsList());
+    formik.setFieldValue("type", undefined);
+  };
+
+  const handleSubmit = (values: ICompleteRegistrationForm) =>
+    console.log(values);
+
+  const handleInputChange = (
+    field: ICompleteRegistrationField,
+    text: string
+  ) => {
+    formik.setFieldValue(field, text);
+  };
+
+  const formik = useFormik<ICompleteRegistrationForm>({
+    initialValues: getDefaultValue(),
+    onSubmit: handleSubmit,
   });
 
-  const handleInputChange = (field: keyof FormData, text: string) => {
-    setFormData({
-      ...formData,
-      [field]: text,
-    });
-  };
-
-  const handleSubmit = () => {
-    // Aqui você pode enviar os dados do formulário para o servidor ou fazer o que desejar
-    console.log("Dados do formulário:", formData);
-  };
+  const isOngUser = formik.values.type === "ong";
+  const isOngForm = fields[0].name === "description";
+  const isValid = false; // change this to be a yup validation
 
   return (
     <SafeAreaView style={styles.container}>
       <Image style={styles.logo} source={logoMini} />
       <ScrollView style={styles.scroll}>
         <View style={styles.card}>
-          <Text>Nome Completo:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Nome Completo"
-            value={formData.fullName}
-            onChangeText={(text) => handleInputChange("fullName", text)}
-          />
-          <Text>Usuário:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Usuário"
-            value={formData.username}
-            onChangeText={(text) => handleInputChange("username", text)}
-          />
-          <Text>Documento:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Documento"
-            value={formData.document}
-            onChangeText={(text) => handleInputChange("document", text)}
-          />
-          <Text>E-mail:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="E-mail"
-            value={formData.email}
-            onChangeText={(text) => handleInputChange("email", text)}
-          />
-          <Text>Telefone:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Telefone"
-            value={formData.phone}
-            onChangeText={(text) => handleInputChange("phone", text)}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <CustomButton
-            onPress={handleSubmit}
-            title="SALVAR"
-            bgColor="#0FF126"
-          />
+          <Text style={styles.title}>
+            {isOngForm ? "Informações da Ong" : "Informações do Usuário"}
+          </Text>
+          {fields.map((field) => (
+            <View key={field.name}>
+              <Text>{field.label}</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Nome Completo"
+                value={formik.values[field.name] ?? ""}
+                onChangeText={(text) => handleInputChange(field.name, text)}
+              />
+            </View>
+          ))}
+
+          <View style={styles.buttonContainer}>
+            <LoadingButton
+              onPress={handleNextOrSubmit}
+              title={!isOngForm && isOngUser ? "PRÓXIMO" : "SALVAR"}
+              bgColor="#0FF126"
+              isLoading={isLoading}
+              style={styles.button}
+            />
+
+            <LoadingButton
+              onPress={handleGoBack}
+              title="VOLTAR"
+              bgColor="gray"
+              disabled={isLoading}
+              style={styles.button}
+            />
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -106,6 +113,13 @@ const styles = StyleSheet.create({
     width: 256,
     height: 109,
     marginBottom: 30,
+  },
+
+  title: {
+    fontSize: 24,
+    lineHeight: 32,
+    marginVertical: 20,
+    textAlign: "center",
   },
 
   card: {
@@ -132,8 +146,14 @@ const styles = StyleSheet.create({
 
   buttonContainer: {
     width: "100%",
-    alignItems: "flex-end",
-  }
+    justifyContent: "center",
+    gap: 10,
+    flexDirection: "row",
+  },
+
+  button: {
+    width: "50%",
+  },
 });
 
 export default CompleteRegistration;

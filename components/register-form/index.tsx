@@ -1,20 +1,43 @@
 import React, { useState } from "react";
 import { View, TextInput, StyleSheet, Text } from "react-native";
-import CustomButton from "../CustomButton";
+import LoadingButton from "@/components/Buttons/LoadingButton";
 
-import performCreate from "../../services/create/create";
+import createUser, { ICreateUserPayload } from "@/services/auth/create";
 import { useFormik } from "formik";
 
-const RegisterForm = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+interface RegisterFormProps {
+  jumpTo: (key: string) => void;
+}
 
-  const formik = useFormik;
+const RegisterForm = (props: RegisterFormProps) => {
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleRegister = async () => {
-    const { data } = await performCreate({ name, email, password });
+  const handleSubmit = (values: ICreateUserPayload) => {
+    setIsLoading(false);
+
+    createUser(values)
+      .then(() => {
+        alert("Parabéns, você está cadastrado. 😁");
+        props.jumpTo("loginForm");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
+
+  const handleChange = (name: string) => {
+    return (value: string) => formik.setFieldValue(name, value);
+  };
+
+  const formik = useFormik<ICreateUserPayload>({
+    initialValues: {
+      name: "",
+      sobrenome: "",
+      email: "",
+      password: "",
+    },
+    onSubmit: handleSubmit,
+  });
 
   return (
     <View style={styles.container}>
@@ -22,24 +45,24 @@ const RegisterForm = () => {
       <TextInput
         style={styles.input}
         placeholder="Nome"
-        value={name}
-        onChangeText={setName}
+        value={formik.values.name}
+        onChangeText={handleChange("nome")}
       />
 
       <Text>Sobrenome:</Text>
       <TextInput
         style={styles.input}
         placeholder="Sobrenome"
-        value={name}
-        onChangeText={setName}
+        value={formik.values.sobrenome}
+        onChangeText={handleChange("sobrenome")}
       />
 
       <Text>E-mail:</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
+        value={formik.values.email}
+        onChangeText={handleChange("email")}
       />
 
       <Text>Senha:</Text>
@@ -47,13 +70,14 @@ const RegisterForm = () => {
         style={styles.input}
         placeholder="Senha"
         secureTextEntry
-        value={password}
-        onChangeText={setPassword}
+        value={formik.values.password}
+        onChangeText={handleChange("password")}
       />
-      <CustomButton
+      <LoadingButton
         title="Registrar-se"
-        onPress={handleRegister}
+        onPress={formik.handleSubmit}
         style={styles.button}
+        isLoading={isLoading}
       />
     </View>
   );

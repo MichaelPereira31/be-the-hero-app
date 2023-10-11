@@ -1,32 +1,41 @@
-import React, { FC } from "react";
+import React from "react";
 import {
-  View,
   Text,
   TouchableOpacity,
   StyleSheet,
   StyleProp,
   ViewStyle,
+  ActivityIndicator,
 } from "react-native";
 
-interface CustomButtonProps {
+interface LoadingButtonProps {
   title: string;
   onPress: () => void;
   bgColor?: string;
   style?: StyleProp<ViewStyle>;
+  isLoading?: boolean;
+  disabled?: boolean;
 }
 
-const CustomButton: FC<CustomButtonProps> = ({
+const LoadingButton = ({
   title,
   onPress,
   bgColor = "#dda640",
   style,
-}) => {
+  isLoading = false,
+  disabled = false,
+}: LoadingButtonProps) => {
   return (
     <TouchableOpacity
       style={[style, styles.buttonContainer, { backgroundColor: bgColor }]}
       onPress={onPress}
+      disabled={isLoading || disabled}
     >
-      <Text style={styles.buttonText}>{title}</Text>
+      {isLoading ? (
+        <ActivityIndicator size="small" color="#fff" />
+      ) : (
+        <Text style={styles.buttonText}>{title}</Text>
+      )}
     </TouchableOpacity>
   );
 };
@@ -46,4 +55,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomButton;
+export default LoadingButton;
