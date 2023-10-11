@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Image, StyleSheet, Text, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import logoMini from "../../assets/images/BTH-mini.png";
+import logoMini from "../assets/images/BTH-mini.png";
 
 import CustomButton from "../../components/CustomButton";
 import { ScrollView } from "react-native-gesture-handler";

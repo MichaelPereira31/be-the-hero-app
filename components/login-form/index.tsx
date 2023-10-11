@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigation } from '@react-navigation/native'
 import { Text } from 'react-native';
 import { View, TextInput, StyleSheet } from 'react-native';
-import CustomButton from '../../../components/CustomButton';
-import { setToken } from '../../../services'
-import auth from '../../../utils/auth'
-import performLogin from '../../../services/auth/login'
 
-const LoginScreen = () => {
+import CustomButton from '../CustomButton';
+import { setToken } from '../../services'
+import auth from '../../utils/auth'
+import performLogin from '../../services/auth/login'
+
+const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -36,7 +36,7 @@ const LoginScreen = () => {
         value={password}
         onChangeText={setPassword}
       />
-      <CustomButton title="Login" onPress={handleLogin} />
+      <CustomButton title="Login" onPress={handleLogin} style={styles.button} />
     </View>
   );
 };
@@ -44,8 +44,8 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
     padding: 16,
+    marginTop: 16
   },
   input: {
     width: '100%',
@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: 20,
+    marginTop: 16
   }
 });
 
-export default LoginScreen;
+export default LoginForm;

@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, Text } from 'react-native';
-import CustomButton from '../../../components/CustomButton';
-import { useNavigation } from '@react-navigation/native'
+import CustomButton from '../CustomButton';
 
-import performCreate from '../../../services/create/create'
+import performCreate from '../../services/create/create'
 
-const RegisterScreen = () => {
-  const navigation = useNavigation()
-
+const RegisterForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleRegister = async () => {
     const { data } = await performCreate({name, email, password})
-    navigation.navigate('')
+
+    console.log(data)
   };
 
   return (
@@ -43,7 +41,7 @@ const RegisterScreen = () => {
         value={password}
         onChangeText={setPassword}
       />
-      <CustomButton title="Registrar-se" onPress={handleRegister} />
+      <CustomButton title="Registrar-se" onPress={handleRegister} style={styles.button} />
     </View>
   );
 };
@@ -53,6 +51,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     padding: 16,
+    marginTop: 16
   },
   input: {
     width: '100%',
@@ -62,6 +61,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingLeft: 10,
   },
+  button: {
+    marginTop: 16
+  }
 });
 
-export default RegisterScreen;
+export default RegisterForm;

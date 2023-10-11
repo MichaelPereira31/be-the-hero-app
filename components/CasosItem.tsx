@@ -9,7 +9,7 @@ import unfavoriteIcon from "./icons/unfavorite.png";
 import whatsappIcon from "./icons/whatsapp.png";
 import { useNavigation } from '@react-navigation/native';
 
-type TCases = {
+export type TCases = {
   id: string;
   avatar: string;
   name: string;
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 2,
   },
-  
+
   bio: {
     marginTop: 10,
     fontSize: 12,

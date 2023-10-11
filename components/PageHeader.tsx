@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
@@ -8,9 +8,10 @@ type TPageHeader = {
   headerRight?: any;
   children?: any;
   bgColor?: string;
+  style: StyleProp<ViewStyle>
 }
 
-export default function PageHeader({ title, headerRight, children, bgColor = '#dda640' }: TPageHeader) {
+export default function PageHeader({ title, headerRight, children, style }: TPageHeader) {
   const { navigate } = useNavigation();
 
   function handleGoBack() {
@@ -18,7 +19,7 @@ export default function PageHeader({ title, headerRight, children, bgColor = '#d
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: bgColor }]}>
+    <View style={[style, styles.container]}>
       <View style={styles.topBar}>
       </View>
 
@@ -35,7 +36,8 @@ export default function PageHeader({ title, headerRight, children, bgColor = '#d
 
 const styles = StyleSheet.create({
   container: {
-    padding: 40,
+    padding: 56,
+    backgroundColor: "#dda640"
   },
 
   topBar: {

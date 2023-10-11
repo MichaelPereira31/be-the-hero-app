@@ -33,7 +33,7 @@ export default function TabOneScreen() {
     AsyncStorage.getItem('favorites').then(response => {
       if (response) {
         const favoritedTeachers = JSON.parse(response);
-        const favoritedTeachersIds = favoritedTeachers.map((teacher) => { 
+        const favoritedTeachersIds = favoritedTeachers.map((teacher) => {
           return teacher.id;
         });
 
@@ -98,7 +98,7 @@ export default function TabOneScreen() {
               </View>
             </View>
 
-            <RectButton 
+            <RectButton
               style={styles.submitButton}
               onPress={()=> fetchCasos()}
             >
@@ -107,7 +107,7 @@ export default function TabOneScreen() {
           </View>:
           <View></View>
 }
-      
+
       </PageHeader>
 
       <ScrollView
@@ -118,7 +118,7 @@ export default function TabOneScreen() {
         }}
       >
         {casos.map((casosI) => (
-        <CasosItem 
+        <CasosItem
           key={casosI.id}
           casos={casosI}
           favorited={favorites.includes(casosI.id)}
