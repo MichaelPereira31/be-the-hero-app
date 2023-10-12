@@ -27,7 +27,7 @@ const UserTypeSelect = (props: UserTypeSelectProps) => {
         </RectButton>
         <RectButton style={styles.button} onPress={() => props.onChange("ong")}>
           <Image style={styles.image} source={escola} />
-          <Text style={styles.txt}>Ong</Text>
+          <Text style={styles.txt}>ONG</Text>
         </RectButton>
       </View>
     </>
