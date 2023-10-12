@@ -1,9 +1,7 @@
 import React from "react";
 import { View, Image, StyleSheet, Text } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-import logoMini from "@/assets/images/BTH-mini.png";
 import maos from "@/assets/images/maos.png";
 import escola from "@/assets/images/escola.png";
 import { IUserType } from "@/services/user/create";
@@ -49,7 +47,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 28,
+    fontSize: 24,
     marginBottom: 20,
   },
 
