@@ -152,16 +152,21 @@ const CompleteRegistration = () => {
           </View>
         </ScrollView>
       ) : (
-        <UserTypeSelect
-          value={formik.values.type}
-          onChange={(value) => formik.setFieldValue("type", value)}
-        />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <UserTypeSelect
+            value={formik.values.type}
+            onChange={(value) => formik.setFieldValue("type", value)}
+          />
+        </ScrollView>
       )}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  userTypeContainer: {
+    width: "100%",
+  },
   container: {
     flex: 1,
     padding: 24,

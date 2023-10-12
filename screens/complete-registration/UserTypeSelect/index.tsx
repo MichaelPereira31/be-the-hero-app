@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 20,
+    textAlign: "center",
   },
 
   buttonContainer: {
@@ -56,8 +57,8 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    width: 243,
-    height: 261,
+    width: "100%",
+    minHeight: 261,
     backgroundColor: "#fff",
     marginBottom: 20,
     alignItems: "center",
@@ -67,8 +68,8 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 145,
-    height: 145,
+    width: 130,
+    height: 130,
   },
 
   txt: {
