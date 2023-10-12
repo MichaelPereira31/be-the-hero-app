@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Image, StyleSheet, Text } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,9 +14,6 @@ interface UserTypeSelectProps {
 }
 
 const UserTypeSelect = (props: UserTypeSelectProps) => {
-  const isVoluntarySelected = props.value === "voluntary";
-  const isOngSelected = props.value === "ong";
-
   return (
     <SafeAreaView style={styles.container}>
       <Image style={styles.logo} source={logoMini} />
