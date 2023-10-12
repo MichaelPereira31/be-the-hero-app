@@ -15,8 +15,7 @@ interface UserTypeSelectProps {
 
 const UserTypeSelect = (props: UserTypeSelectProps) => {
   return (
-    <SafeAreaView style={styles.container}>
-      <Image style={styles.logo} source={logoMini} />
+    <>
       <Text style={styles.title}>QUEM É VOCÊ?</Text>
       <View style={styles.buttonContainer}>
         <RectButton
@@ -31,7 +30,7 @@ const UserTypeSelect = (props: UserTypeSelectProps) => {
           <Text style={styles.txt}>Ong</Text>
         </RectButton>
       </View>
-    </SafeAreaView>
+    </>
   );
 };
 

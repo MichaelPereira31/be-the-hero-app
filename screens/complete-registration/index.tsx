@@ -106,58 +106,57 @@ const CompleteRegistration = () => {
   const isOngForm = fields[0].name === "mainPhone";
   const isTypeSelected = !!formik.values.type;
 
-  if (!isTypeSelected)
-    return (
-      <UserTypeSelect
-        value={formik.values.type}
-        onChange={(value) => formik.setFieldValue("type", value)}
-      />
-    );
-
   return (
     <SafeAreaView style={styles.container}>
       <Image style={styles.logo} source={logoMini} />
-      <ScrollView style={styles.scroll} automaticallyAdjustKeyboardInsets>
-        <View style={styles.card}>
-          <Text style={styles.title}>
-            {isOngForm ? "Informações da Ong" : "Informações de Endereço"}
-          </Text>
+      {isTypeSelected ? (
+        <ScrollView style={styles.scroll} automaticallyAdjustKeyboardInsets>
+          <View style={styles.card}>
+            <Text style={styles.title}>
+              {isOngForm ? "Informações da Ong" : "Informações de Endereço"}
+            </Text>
 
-          {fields.map((field) => (
-            <View key={field.name}>
-              <Text>{field.label}</Text>
-              <TextInput
-                style={
-                  field.type === "textarea" ? styles.textarea : styles.input
-                }
-                placeholder={field.placeholder}
-                value={formik.values[field.name] ?? ""}
-                onChangeText={(text) => handleInputChange(field.name, text)}
-                multiline={field.type === "textarea"}
-                numberOfLines={field.type === "textarea" ? 4 : undefined}
+            {fields.map((field) => (
+              <View key={field.name}>
+                <Text>{field.label}</Text>
+                <TextInput
+                  style={
+                    field.type === "textarea" ? styles.textarea : styles.input
+                  }
+                  placeholder={field.placeholder}
+                  value={formik.values[field.name] ?? ""}
+                  onChangeText={(text) => handleInputChange(field.name, text)}
+                  multiline={field.type === "textarea"}
+                  numberOfLines={field.type === "textarea" ? 4 : undefined}
+                />
+              </View>
+            ))}
+
+            <View style={styles.buttonContainer}>
+              <LoadingButton
+                onPress={handleNextOrSubmit}
+                title={!isOngForm && isOngUser ? "PRÓXIMO" : "SALVAR"}
+                bgColor="#0FF126"
+                isLoading={isLoading}
+                style={styles.button}
+              />
+
+              <LoadingButton
+                onPress={handleGoBack}
+                title="VOLTAR"
+                bgColor="gray"
+                disabled={isLoading}
+                style={styles.button}
               />
             </View>
-          ))}
-
-          <View style={styles.buttonContainer}>
-            <LoadingButton
-              onPress={handleNextOrSubmit}
-              title={!isOngForm && isOngUser ? "PRÓXIMO" : "SALVAR"}
-              bgColor="#0FF126"
-              isLoading={isLoading}
-              style={styles.button}
-            />
-
-            <LoadingButton
-              onPress={handleGoBack}
-              title="VOLTAR"
-              bgColor="gray"
-              disabled={isLoading}
-              style={styles.button}
-            />
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      ) : (
+        <UserTypeSelect
+          value={formik.values.type}
+          onChange={(value) => formik.setFieldValue("type", value)}
+        />
+      )}
     </SafeAreaView>
   );
 };
