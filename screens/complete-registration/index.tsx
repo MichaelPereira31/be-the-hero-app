@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { View, Image, StyleSheet, Text, TextInput, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -36,7 +36,7 @@ const CompleteRegistration = () => {
     );
 
   const handleNextOrSubmit = () => {
-    const isValid = true; // change this to be a yup validation
+    const isValid = getIsValid(); // change this to be a yup validation
     if (isValid) return formik.handleSubmit();
 
     if (!isOngForm && isOngUser) setFields(getOngFieldsList());
@@ -74,12 +74,11 @@ const CompleteRegistration = () => {
       );
 
     await Promise.all(promises)
-      .then((v) => {
-        console.log({ v });
+      .then(() => {
         Alert.alert(
           "Cadastro atualizado com successo! 😄",
-          "Agora você pode trafegar por nosso aplicativo livremente. Aproveite!! ✨"
-          // [{ text: "Continuar", onPress: () => push("/home") }]
+          "Agora você pode trafegar por nosso aplicativo livremente. Aproveite!! ✨",
+          [{ text: "Continuar", onPress: () => push("/home") }]
         );
       })
       .catch(() =>
@@ -104,7 +103,7 @@ const CompleteRegistration = () => {
   });
 
   const isOngUser = formik.values.type === "ong";
-  const isOngForm = fields[0].name === "description";
+  const isOngForm = fields[0].name === "mainPhone";
   const isTypeSelected = !!formik.values.type;
 
   if (!isTypeSelected)
@@ -128,10 +127,14 @@ const CompleteRegistration = () => {
             <View key={field.name}>
               <Text>{field.label}</Text>
               <TextInput
-                style={styles.input}
-                placeholder="Nome Completo"
+                style={
+                  field.type === "textarea" ? styles.textarea : styles.input
+                }
+                placeholder={field.placeholder}
                 value={formik.values[field.name] ?? ""}
                 onChangeText={(text) => handleInputChange(field.name, text)}
+                multiline={field.type === "textarea"}
+                numberOfLines={field.type === "textarea" ? 4 : undefined}
               />
             </View>
           ))}
@@ -197,7 +200,21 @@ const styles = StyleSheet.create({
 
   input: {
     width: "100%",
-    height: 40,
+    minHeight: 40,
+    height: "auto",
+    borderWidth: 1,
+    borderBottomWidth: 3,
+    borderColor: "#ccc",
+    borderRadius: 10,
+    marginTop: 2,
+    marginBottom: 16,
+    paddingLeft: 10,
+  },
+
+  textarea: {
+    width: "100%",
+    minHeight: 80,
+    height: "auto",
     borderWidth: 1,
     borderBottomWidth: 3,
     borderColor: "#ccc",

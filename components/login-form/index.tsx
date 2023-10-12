@@ -17,6 +17,8 @@ const LoginForm = () => {
   const handleLogin = async (values: ILoginPayload) => {
     if (formik.isValid) {
       setIsLoading(true);
+      push("/complete-registration");
+
       login(values)
         .then(({ data }) => {
           setToken({ token: data?.data?.token, refreshToken: "" });
@@ -26,8 +28,7 @@ const LoginForm = () => {
               "Ops, você é novo aqui? 🤔",
               "Para ingressar no sistema, voce antes precisa completar seu cadastro. 🫶🏻"
             );
-
-          push(!data?.data?.isComplete ? "/home" : "/complete-registration");
+          push(data?.data?.isComplete ? "/home" : "/complete-registration");
         })
         .catch(() => alert("Credenciais inválidas. 😢"))
         .finally(() => setTimeout(() => setIsLoading(false), 2000));

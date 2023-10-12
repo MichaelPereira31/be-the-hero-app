@@ -1,10 +1,10 @@
-import { IUserType } from "@/services/user/create";
 import { ICompleteRegistrationField, ICompleteRegistrationForm } from ".";
 
 interface IFormField {
   name: ICompleteRegistrationField;
   placeholder: string;
   label: string;
+  type?: string;
 }
 
 export const getDefaultValue = (): ICompleteRegistrationForm => {
@@ -46,12 +46,6 @@ export const getUserFieldsList = (): IFormField[] => {
 
 export const getOngFieldsList = (): IFormField[] => {
   return [
-    { name: "description", placeholder: "Ajudamos cães", label: "Descrição: " },
-    {
-      name: "objective",
-      placeholder: "ajudar cães de rua",
-      label: "Objetivo:",
-    },
     {
       name: "mainPhone",
       placeholder: "(00) 0 0000-0000",
@@ -71,6 +65,18 @@ export const getOngFieldsList = (): IFormField[] => {
       name: "secondaryEmail",
       placeholder: "ong2@hero.com",
       label: "Email Secundário: ",
+    },
+    {
+      name: "description",
+      placeholder: "...",
+      label: "Descrição: ",
+      type: "textarea",
+    },
+    {
+      name: "objective",
+      placeholder: "...",
+      label: "Objetivo:",
+      type: "textarea",
     },
   ];
 };
