@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { View, TextInput, StyleSheet, Text } from "react-native";
+import { View, TextInput, StyleSheet, Text, Alert } from "react-native";
 import LoadingButton from "@/components/Buttons/LoadingButton";
 
-import createUser, { ICreateUserPayload } from "@/services/auth/create";
+import createUser, { ICreateUserPayload } from "@/services/user/create";
 import { useFormik } from "formik";
 
 interface RegisterFormProps {
@@ -13,26 +13,26 @@ const RegisterForm = (props: RegisterFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (values: ICreateUserPayload) => {
-    setIsLoading(false);
+    setIsLoading(true);
 
     createUser(values)
-      .then(() => {
-        alert("Parabéns, você está cadastrado. 😁");
-        props.jumpTo("loginForm");
-      })
+      .then(() =>
+        Alert.alert("Parabéns, você está cadastrado! 😁✨", "", [
+          { text: "Continuar", onPress: () => props.jumpTo("loginForm") },
+        ])
+      )
+      .catch(() =>
+        alert("Ops, problemas ao cadastrar. Tente novamente mais tarde! 🫠")
+      )
       .finally(() => {
         setIsLoading(false);
       });
   };
 
-  const handleChange = (name: string) => {
-    return (value: string) => formik.setFieldValue(name, value);
-  };
-
   const formik = useFormik<ICreateUserPayload>({
     initialValues: {
       name: "",
-      sobrenome: "",
+      lastName: "",
       email: "",
       password: "",
     },
@@ -46,15 +46,17 @@ const RegisterForm = (props: RegisterFormProps) => {
         style={styles.input}
         placeholder="Nome"
         value={formik.values.name}
-        onChangeText={handleChange("nome")}
+        onChangeText={(value: string) => formik.setFieldValue("name", value)}
       />
 
       <Text>Sobrenome:</Text>
       <TextInput
         style={styles.input}
         placeholder="Sobrenome"
-        value={formik.values.sobrenome}
-        onChangeText={handleChange("sobrenome")}
+        value={formik.values.lastName}
+        onChangeText={(value: string) =>
+          formik.setFieldValue("lastName", value)
+        }
       />
 
       <Text>E-mail:</Text>
@@ -62,7 +64,7 @@ const RegisterForm = (props: RegisterFormProps) => {
         style={styles.input}
         placeholder="Email"
         value={formik.values.email}
-        onChangeText={handleChange("email")}
+        onChangeText={(value: string) => formik.setFieldValue("email", value)}
       />
 
       <Text>Senha:</Text>
@@ -71,7 +73,9 @@ const RegisterForm = (props: RegisterFormProps) => {
         placeholder="Senha"
         secureTextEntry
         value={formik.values.password}
-        onChangeText={handleChange("password")}
+        onChangeText={(value: string) =>
+          formik.setFieldValue("password", value)
+        }
       />
       <LoadingButton
         title="Registrar-se"

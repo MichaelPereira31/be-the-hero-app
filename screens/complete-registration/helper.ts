@@ -1,4 +1,4 @@
-import { IUserType } from "@/services/auth/create";
+import { IUserType } from "@/services/user/create";
 import { ICompleteRegistrationField, ICompleteRegistrationForm } from ".";
 
 interface IFormField {

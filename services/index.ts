@@ -1,7 +1,7 @@
-import axios, { Axios } from "axios";
+import { Axios } from "axios";
 
 const api = new Axios({
-  baseURL: "http://192.168.100.66:3333",
+  baseURL: "https://linear-inbox-compatible-tune.trycloudflare.com/",
 });
 
 export const setToken = (_token: string) => {

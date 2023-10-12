@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import { Text } from "react-native";
+import { Alert, Text } from "react-native";
 import { View, TextInput, StyleSheet } from "react-native";
 
 import LoadingButton from "@/components/Buttons/LoadingButton";
@@ -16,13 +16,20 @@ const LoginForm = () => {
 
   const handleLogin = async (values: ILoginPayload) => {
     if (formik.isValid) {
-      return push("/complete-registration");
       setIsLoading(true);
       login(values)
-        .then((response) => {
-          setToken({ token: response.data, refreshToken: "" });
-          push("/home");
+        .then(({ data }) => {
+          setToken({ token: data.token, refreshToken: "" });
+
+          if (!data.isComplete)
+            Alert.alert(
+              "Ops, você é novo aqui? 🤔",
+              "Para ingressar no sistema, voce antes precisa completar seu cadastro. 🫶🏻"
+            );
+
+          push(data.isComplete ? "/home" : "/complete-registration");
         })
+        .catch(() => alert("Credenciais inválidas. 😢"))
         .finally(() => setTimeout(() => setIsLoading(false), 2000));
     }
   };

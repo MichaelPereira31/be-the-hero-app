@@ -8,7 +8,7 @@ import LoadingButton from "@/components/Buttons/LoadingButton";
 import { ScrollView } from "react-native-gesture-handler";
 import { useFormik } from "formik";
 import { ICreateAddressPayload } from "@/services/address/create";
-import { ICreateUserPayload } from "@/services/auth/create";
+import { ICreateUserPayload } from "@/services/user/create";
 import { getDefaultValue, getOngFieldsList, getUserFieldsList } from "./helper";
 import { ICreateOngPayload } from "@/services/ong/create";
 
