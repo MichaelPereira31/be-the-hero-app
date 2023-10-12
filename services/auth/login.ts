@@ -1,13 +1,16 @@
 import api from "@/services";
+import { TResponse } from "../@types/response";
 
 export interface ILoginPayload {
   email: string;
   password: string;
 }
 
-export interface ILoginResponse {
-  token: string;
-  isComplete: boolean;
+export interface ILoginResponse extends TResponse {
+  data: {
+    token: string;
+    isComplete: boolean;
+  };
 }
 
 const login = async (payload: ILoginPayload) => {

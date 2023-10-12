@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Image, StyleSheet, Text, TextInput } from "react-native";
+import React, { useMemo, useState } from "react";
+import { View, Image, StyleSheet, Text, TextInput, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import logoMini from "@/assets/images/BTH-mini.png";
@@ -7,10 +7,14 @@ import logoMini from "@/assets/images/BTH-mini.png";
 import LoadingButton from "@/components/Buttons/LoadingButton";
 import { ScrollView } from "react-native-gesture-handler";
 import { useFormik } from "formik";
-import { ICreateAddressPayload } from "@/services/address/create";
+import createAddress, {
+  ICreateAddressPayload,
+} from "@/services/address/create";
 import { ICreateUserPayload } from "@/services/user/create";
 import { getDefaultValue, getOngFieldsList, getUserFieldsList } from "./helper";
-import { ICreateOngPayload } from "@/services/ong/create";
+import createOng, { ICreateOngPayload } from "@/services/ong/create";
+import UserTypeSelect from "./UserTypeSelect";
+import { useRouter } from "expo-router";
 
 export type ICompleteRegistrationForm = ICreateOngPayload &
   ICreateAddressPayload &
@@ -21,9 +25,19 @@ export type ICompleteRegistrationField = keyof ICompleteRegistrationForm;
 const CompleteRegistration = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [fields, setFields] = useState(getUserFieldsList());
+  const { push } = useRouter();
+
+  const getIsValid = () =>
+    // only ong types will be able to be created
+    Object.keys(formik.values).reduce(
+      (prev, current) =>
+        prev && !!formik.values[current as ICompleteRegistrationField],
+      true
+    );
 
   const handleNextOrSubmit = () => {
-    if (isValid) formik.handleSubmit();
+    const isValid = true; // change this to be a yup validation
+    if (isValid) return formik.handleSubmit();
 
     if (!isOngForm && isOngUser) setFields(getOngFieldsList());
     else setFields(getUserFieldsList());
@@ -34,8 +48,48 @@ const CompleteRegistration = () => {
     formik.setFieldValue("type", undefined);
   };
 
-  const handleSubmit = (values: ICompleteRegistrationForm) =>
-    console.log(values);
+  const handleSubmit = async (values: ICompleteRegistrationForm) => {
+    setIsLoading(true);
+    const promises = [
+      createAddress({
+        city: values.city,
+        complement: values.complement,
+        neighborhood: values.neighborhood,
+        number: values.number,
+        reference: values.reference,
+        street: values.street,
+      }),
+    ];
+
+    if (isOngUser)
+      promises.push(
+        createOng({
+          description: values.description,
+          objective: values.objective,
+          mainPhone: values.mainPhone,
+          secondaryPhone: values.secondaryPhone,
+          mainEmail: values.mainEmail,
+          secondaryEmail: values.secondaryEmail,
+        })
+      );
+
+    await Promise.all(promises)
+      .then((v) => {
+        console.log({ v });
+        Alert.alert(
+          "Cadastro atualizado com successo! 😄",
+          "Agora você pode trafegar por nosso aplicativo livremente. Aproveite!! ✨"
+          // [{ text: "Continuar", onPress: () => push("/home") }]
+        );
+      })
+      .catch(() =>
+        Alert.alert(
+          "Problemas ao concluir cadastro. ❌",
+          "Para mais informações, contate o suporte. ☹️"
+        )
+      )
+      .finally(() => setIsLoading(false));
+  };
 
   const handleInputChange = (
     field: ICompleteRegistrationField,
@@ -51,16 +105,25 @@ const CompleteRegistration = () => {
 
   const isOngUser = formik.values.type === "ong";
   const isOngForm = fields[0].name === "description";
-  const isValid = false; // change this to be a yup validation
+  const isTypeSelected = !!formik.values.type;
+
+  if (!isTypeSelected)
+    return (
+      <UserTypeSelect
+        value={formik.values.type}
+        onChange={(value) => formik.setFieldValue("type", value)}
+      />
+    );
 
   return (
     <SafeAreaView style={styles.container}>
       <Image style={styles.logo} source={logoMini} />
-      <ScrollView style={styles.scroll}>
+      <ScrollView style={styles.scroll} automaticallyAdjustKeyboardInsets>
         <View style={styles.card}>
           <Text style={styles.title}>
-            {isOngForm ? "Informações da Ong" : "Informações do Usuário"}
+            {isOngForm ? "Informações da Ong" : "Informações de Endereço"}
           </Text>
+
           {fields.map((field) => (
             <View key={field.name}>
               <Text>{field.label}</Text>

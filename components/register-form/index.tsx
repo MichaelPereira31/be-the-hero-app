@@ -1,9 +1,9 @@
+import { useFormik } from "formik";
 import React, { useState } from "react";
 import { View, TextInput, StyleSheet, Text, Alert } from "react-native";
-import LoadingButton from "@/components/Buttons/LoadingButton";
 
+import LoadingButton from "@/components/Buttons/LoadingButton";
 import createUser, { ICreateUserPayload } from "@/services/user/create";
-import { useFormik } from "formik";
 
 interface RegisterFormProps {
   jumpTo: (key: string) => void;
@@ -16,11 +16,12 @@ const RegisterForm = (props: RegisterFormProps) => {
     setIsLoading(true);
 
     createUser(values)
-      .then(() =>
+      .then(() => {
         Alert.alert("Parabéns, você está cadastrado! 😁✨", "", [
           { text: "Continuar", onPress: () => props.jumpTo("loginForm") },
-        ])
-      )
+        ]);
+        formik.resetForm();
+      })
       .catch(() =>
         alert("Ops, problemas ao cadastrar. Tente novamente mais tarde! 🫠")
       )

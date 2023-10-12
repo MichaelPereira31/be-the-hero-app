@@ -21,8 +21,7 @@ export const getDefaultValue = (): ICompleteRegistrationForm => {
     city: "",
     complement: "",
     reference: "",
-    type: "ong",
-    userId: "",
+    type: undefined,
   };
 };
 

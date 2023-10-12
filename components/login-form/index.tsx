@@ -19,15 +19,15 @@ const LoginForm = () => {
       setIsLoading(true);
       login(values)
         .then(({ data }) => {
-          setToken({ token: data.token, refreshToken: "" });
+          setToken({ token: data?.data?.token, refreshToken: "" });
 
-          if (!data.isComplete)
+          if (!data?.data?.isComplete)
             Alert.alert(
               "Ops, você é novo aqui? 🤔",
               "Para ingressar no sistema, voce antes precisa completar seu cadastro. 🫶🏻"
             );
 
-          push(data.isComplete ? "/home" : "/complete-registration");
+          push(!data?.data?.isComplete ? "/home" : "/complete-registration");
         })
         .catch(() => alert("Credenciais inválidas. 😢"))
         .finally(() => setTimeout(() => setIsLoading(false), 2000));

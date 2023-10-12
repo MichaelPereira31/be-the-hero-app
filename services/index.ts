@@ -1,7 +1,11 @@
 import { Axios } from "axios";
 
 const api = new Axios({
-  baseURL: "https://linear-inbox-compatible-tune.trycloudflare.com/",
+  baseURL: "https://authors-ep-printers-terms.trycloudflare.com",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "*",
+  },
 });
 
 export const setToken = (_token: string) => {

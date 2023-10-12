@@ -1,7 +1,7 @@
+import { getToken } from "@/hooks/useAuthentication/helper";
 import api from "@/services";
 
 export interface ICreateOngPayload {
-  userId: string;
   description: string;
   objective: string;
   mainPhone: string;
@@ -11,7 +11,11 @@ export interface ICreateOngPayload {
 }
 
 const createOng = async (payload: ICreateOngPayload) => {
-  return await api.post("/ong/create", payload);
+  const tokenConf = await getToken();
+
+  return await api.post("/ong/", payload, {
+    headers: { Authorization: `Bearer ${tokenConf?.token}` },
+  });
 };
 
 export default createOng;

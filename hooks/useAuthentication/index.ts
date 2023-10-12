@@ -1,7 +1,8 @@
-import { getItem, setItem } from "@/utils/asyncStorage";
+import { setItem } from "@/utils/asyncStorage";
 import { useEffect, useState } from "react";
 
 import { setToken as setApiToken } from "@/services";
+import { getToken } from "./helper";
 
 export type TUseAuthentication = {
   token: string;
@@ -26,11 +27,6 @@ const useAuthentication = () => {
         setRefreshToken(params.refreshToken);
       })
       .finally(() => setIsGrabbingToken(false));
-  };
-
-  const getToken = async () => {
-    const stringifiedToken = await getItem(TOKEN_STORAGE_KEY);
-    return JSON.parse(stringifiedToken ?? "{}");
   };
 
   const reloadToken = () =>
