@@ -1,6 +1,7 @@
 import { TUseAuthentication } from "@/hooks/useAuthentication";
 import { getToken } from "@/hooks/useAuthentication/helper";
 import api from "@/services";
+import { IHeaders } from "../@types/request";
 
 export interface ICreateAddressPayload {
   street: string;
@@ -11,10 +12,12 @@ export interface ICreateAddressPayload {
   reference: string;
 }
 
-const createAddress = async (payload: ICreateAddressPayload) => {
-  const tokenConf = await getToken();
+const createAddress = async (
+  payload: ICreateAddressPayload,
+  headers?: IHeaders
+) => {
   return await api.post("/address/", payload, {
-    headers: { Authorization: `Bearer ${tokenConf?.token}` },
+    headers,
   });
 };
 

@@ -17,7 +17,6 @@ const LoginForm = () => {
   const handleLogin = async (values: ILoginPayload) => {
     if (formik.isValid) {
       setIsLoading(true);
-      push("/complete-registration");
 
       login(values)
         .then(({ data }) => {

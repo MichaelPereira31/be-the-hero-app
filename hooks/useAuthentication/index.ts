@@ -55,6 +55,9 @@ const useAuthentication = () => {
     setToken,
     getToken,
     reloadToken,
+    extraHeaders: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
   };
 };
 

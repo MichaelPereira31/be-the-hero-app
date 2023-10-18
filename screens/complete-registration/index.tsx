@@ -15,6 +15,7 @@ import { getDefaultValue, getOngFieldsList, getUserFieldsList } from "./helper";
 import createOng, { ICreateOngPayload } from "@/services/ong/create";
 import UserTypeSelect from "./UserTypeSelect";
 import { useRouter } from "expo-router";
+import useAuthentication from "@/hooks/useAuthentication";
 
 export type ICompleteRegistrationForm = ICreateOngPayload &
   ICreateAddressPayload &
@@ -25,7 +26,9 @@ export type ICompleteRegistrationField = keyof ICompleteRegistrationForm;
 const CompleteRegistration = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [fields, setFields] = useState(getUserFieldsList());
+
   const { push } = useRouter();
+  const { extraHeaders } = useAuthentication();
 
   const getIsValid = () =>
     // only ong types will be able to be created
@@ -50,37 +53,39 @@ const CompleteRegistration = () => {
 
   const handleSubmit = async (values: ICompleteRegistrationForm) => {
     setIsLoading(true);
-    const promises = [
-      createAddress({
+    createAddress(
+      {
         city: values.city,
         complement: values.complement,
         neighborhood: values.neighborhood,
         number: values.number,
         reference: values.reference,
         street: values.street,
-      }),
-    ];
-
-    if (isOngUser)
-      promises.push(
-        createOng({
-          description: values.description,
-          objective: values.objective,
-          mainPhone: values.mainPhone,
-          secondaryPhone: values.secondaryPhone,
-          mainEmail: values.mainEmail,
-          secondaryEmail: values.secondaryEmail,
-        })
-      );
-
-    await Promise.all(promises)
-      .then(() => {
+      },
+      extraHeaders
+    )
+      .then(async ({ data }) => {
+        if (isOngUser)
+          createOng(
+            {
+              description: values.description,
+              objective: values.objective,
+              mainPhone: values.mainPhone,
+              secondaryPhone: values.secondaryPhone,
+              mainEmail: values.mainEmail,
+              secondaryEmail: values.secondaryEmail,
+              addressId: data.id,
+            },
+            extraHeaders
+          );
+      })
+      .then(() =>
         Alert.alert(
           "Cadastro atualizado com successo! 😄",
           "Agora você pode trafegar por nosso aplicativo livremente. Aproveite!! ✨",
           [{ text: "Continuar", onPress: () => push("/home") }]
-        );
-      })
+        )
+      )
       .catch(() =>
         Alert.alert(
           "Problemas ao concluir cadastro. ❌",
