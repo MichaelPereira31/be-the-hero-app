@@ -30,6 +30,9 @@ const CompleteRegistration = () => {
   const { push } = useRouter();
   const { extraHeaders } = useAuthentication();
 
+  const ongFieldList = getOngFieldsList();
+  const addressFieldList = getUserFieldsList();
+
   const getIsValid = () =>
     // only ong types will be able to be created
     Object.keys(formik.values).reduce(
@@ -42,49 +45,55 @@ const CompleteRegistration = () => {
     const isValid = getIsValid(); // change this to be a yup validation
     if (isValid) return formik.handleSubmit();
 
-    if (!isOngForm && isOngUser) setFields(getOngFieldsList());
-    else setFields(getUserFieldsList());
+    if (!isOngForm && isOngUser) setFields(ongFieldList);
+    else setFields(addressFieldList);
   };
 
   const handleGoBack = () => {
-    if (isOngForm) return setFields(getUserFieldsList());
+    if (isOngForm) return setFields(addressFieldList);
     formik.setFieldValue("type", undefined);
   };
 
   const handleSubmit = async (values: ICompleteRegistrationForm) => {
     setIsLoading(true);
-    createAddress(
-      {
-        city: values.city,
-        complement: values.complement,
-        neighborhood: values.neighborhood,
-        number: values.number,
-        reference: values.reference,
-        street: values.street,
-      },
-      extraHeaders
-    )
-      .then(async ({ data }) => {
-        if (isOngUser)
-          createOng(
-            {
-              description: values.description,
-              objective: values.objective,
-              mainPhone: values.mainPhone,
-              secondaryPhone: values.secondaryPhone,
-              mainEmail: values.mainEmail,
-              secondaryEmail: values.secondaryEmail,
-            },
-            extraHeaders
-          );
-      })
-      .then(() =>
+    const promises = [
+      createAddress(
+        {
+          city: values.city,
+          complement: values.complement,
+          neighborhood: values.neighborhood,
+          number: values.number,
+          reference: values.reference,
+          street: values.street,
+        },
+        extraHeaders
+      ),
+    ];
+
+    if (isOngUser)
+      promises.push(
+        createOng(
+          {
+            name: values.name,
+            description: values.description,
+            objective: values.objective,
+            mainPhone: values.mainPhone,
+            secondaryPhone: values.secondaryPhone,
+            mainEmail: values.mainEmail,
+            secondaryEmail: values.secondaryEmail,
+          },
+          extraHeaders
+        )
+      );
+
+    await Promise.all(promises)
+      .then(() => {
         Alert.alert(
           "Cadastro atualizado com successo! 😄",
           "Agora você pode trafegar por nosso aplicativo livremente. Aproveite!! ✨",
           [{ text: "Continuar", onPress: () => push("/home") }]
-        )
-      )
+        );
+      })
       .catch(() =>
         Alert.alert(
           "Problemas ao concluir cadastro. ❌",
@@ -107,7 +116,7 @@ const CompleteRegistration = () => {
   });
 
   const isOngUser = formik.values.type === "ong";
-  const isOngForm = fields[0].name === "mainPhone";
+  const isOngForm = fields[0].name === ongFieldList[0].name;
   const isTypeSelected = !!formik.values.type;
 
   return (

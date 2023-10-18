@@ -3,6 +3,7 @@ import api from "@/services";
 import { IHeaders } from "../@types/request";
 
 export interface ICreateOngPayload {
+  name: string;
   description: string;
   objective: string;
   mainPhone: string;

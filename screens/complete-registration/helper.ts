@@ -9,6 +9,7 @@ interface IFormField {
 
 export const getDefaultValue = (): ICompleteRegistrationForm => {
   return {
+    name: "",
     description: "",
     objective: "",
     mainPhone: "",
@@ -46,6 +47,11 @@ export const getUserFieldsList = (): IFormField[] => {
 
 export const getOngFieldsList = (): IFormField[] => {
   return [
+    {
+      name: "name",
+      placeholder: "Cães Felizes",
+      label: "Nome: ",
+    },
     {
       name: "mainPhone",
       placeholder: "(00) 0 0000-0000",
