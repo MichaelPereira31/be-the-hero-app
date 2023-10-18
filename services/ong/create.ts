@@ -9,7 +9,6 @@ export interface ICreateOngPayload {
   secondaryPhone: string;
   mainEmail: string;
   secondaryEmail: string;
-  addressId: string;
 }
 
 const createOng = async (payload: ICreateOngPayload, headers?: IHeaders) => {

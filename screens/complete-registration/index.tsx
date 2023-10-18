@@ -74,7 +74,6 @@ const CompleteRegistration = () => {
               secondaryPhone: values.secondaryPhone,
               mainEmail: values.mainEmail,
               secondaryEmail: values.secondaryEmail,
-              addressId: data.id,
             },
             extraHeaders
           );
