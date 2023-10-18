@@ -1,10 +1,10 @@
-import { Axios } from "axios";
+import axios from "axios";
 
-const api = new Axios({
-  baseURL: "https://authors-ep-printers-terms.trycloudflare.com",
+const api = axios.create({
+  baseURL: "http://192.168.100.66:3333",
   headers: {
     "Content-Type": "application/json",
-    Accept: "*",
+    Accept: "*/*",
   },
 });
 
