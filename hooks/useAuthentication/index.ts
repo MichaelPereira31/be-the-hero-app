@@ -44,8 +44,10 @@ const useAuthentication = () => {
         setIsGrabbingToken(true);
       });
 
-  const cleanToken = () => {
-    removeItem(TOKEN_STORAGE_KEY);
+  const clearToken = async () => {
+    await removeItem(TOKEN_STORAGE_KEY);
+    setBearerToken("");
+    setRefreshToken("");
   };
 
   useEffect(() => {
@@ -59,7 +61,7 @@ const useAuthentication = () => {
     setToken,
     getToken,
     reloadToken,
-    cleanToken,
+    clearToken,
     extraHeaders: {
       Authorization: `Bearer ${bearerToken}`,
     },
