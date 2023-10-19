@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
 import { useFormik } from "formik";
-import { Alert, Text } from "react-native";
-import { View, TextInput, StyleSheet } from "react-native";
+import { Alert, Text, View, StyleSheet } from "react-native";
 
 import LoadingButton from "@/components/Buttons/LoadingButton";
 import login, { ILoginPayload } from "@/services/auth/login";
 import useAuthentication from "@/hooks/useAuthentication";
-import { useRouter } from "expo-router";
+import { LoginSchema } from "./schema";
+import TextInput from "../Fields/TextInput";
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -37,27 +38,30 @@ const LoginForm = () => {
   const formik = useFormik<ILoginPayload>({
     initialValues: { email: "", password: "" },
     onSubmit: handleLogin,
+    validationSchema: LoginSchema,
+    validateOnChange: true,
+    validateOnMount: false,
   });
 
   return (
     <View style={styles.container}>
-      <Text>E-mail:</Text>
       <TextInput
-        style={styles.input}
-        placeholder="Email"
+        label="Email:"
         value={formik.values.email}
-        onChangeText={(email: string) => formik.setFieldValue("email", email)}
+        setValue={(email: string) => formik.setFieldValue("email", email)}
+        error={formik.errors.email}
       />
-      <Text>Senha:</Text>
+
       <TextInput
-        style={styles.input}
-        placeholder="Senha"
-        secureTextEntry
+        label="Senha:"
         value={formik.values.password}
-        onChangeText={(password: string) =>
+        setValue={(password: string) =>
           formik.setFieldValue("password", password)
         }
+        error={formik.errors.password}
+        secureTextEntry
       />
+
       <LoadingButton
         title="Login"
         onPress={formik.handleSubmit}
@@ -73,14 +77,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     marginTop: 16,
-  },
-  input: {
-    width: "100%",
-    height: 40,
-    borderBottomWidth: 1,
-    borderColor: "#ccc",
-    marginBottom: 16,
-    paddingLeft: 10,
   },
   button: {
     borderRadius: 20,

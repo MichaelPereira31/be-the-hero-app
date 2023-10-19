@@ -1,9 +1,11 @@
 import { useFormik } from "formik";
 import React, { useState } from "react";
-import { View, TextInput, StyleSheet, Text, Alert } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 
 import LoadingButton from "@/components/Buttons/LoadingButton";
 import createUser, { ICreateUserPayload } from "@/services/user/create";
+import TextInput from "../Fields/TextInput";
+import { RegisterSchema } from "./schema";
 
 interface RegisterFormProps {
   jumpTo: (key: string) => void;
@@ -38,46 +40,43 @@ const RegisterForm = (props: RegisterFormProps) => {
       password: "",
     },
     onSubmit: handleSubmit,
+    validationSchema: RegisterSchema,
+    validateOnChange: true,
+    validateOnBlur: true,
+    validateOnMount: false,
   });
 
   return (
     <View style={styles.container}>
-      <Text>Nome:</Text>
       <TextInput
-        style={styles.input}
-        placeholder="Nome"
+        label="Nome:"
         value={formik.values.name}
-        onChangeText={(value: string) => formik.setFieldValue("name", value)}
+        setValue={(value: string) => formik.setFieldValue("name", value)}
+        error={formik.errors.name}
       />
 
-      <Text>Sobrenome:</Text>
       <TextInput
-        style={styles.input}
-        placeholder="Sobrenome"
+        label="Sobrenome:"
         value={formik.values.lastName}
-        onChangeText={(value: string) =>
-          formik.setFieldValue("lastName", value)
-        }
+        setValue={(value: string) => formik.setFieldValue("lastName", value)}
+        error={formik.errors.lastName}
       />
 
-      <Text>E-mail:</Text>
       <TextInput
-        style={styles.input}
-        placeholder="Email"
+        label="Email:"
         value={formik.values.email}
-        onChangeText={(value: string) => formik.setFieldValue("email", value)}
+        setValue={(value: string) => formik.setFieldValue("email", value)}
+        error={formik.errors.email}
       />
 
-      <Text>Senha:</Text>
       <TextInput
-        style={styles.input}
-        placeholder="Senha"
-        secureTextEntry
+        label="Senha:"
         value={formik.values.password}
-        onChangeText={(value: string) =>
-          formik.setFieldValue("password", value)
-        }
+        setValue={(value: string) => formik.setFieldValue("password", value)}
+        error={formik.errors.password}
+        secureTextEntry
       />
+
       <LoadingButton
         title="Registrar-se"
         onPress={formik.handleSubmit}
