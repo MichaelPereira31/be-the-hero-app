@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Image } from "react-native";
-import { SceneMap, TabBar, TabView } from "react-native-tab-view";
+import { SceneMap, TabView } from "react-native-tab-view";
 
 import PageHeader from "../../components/PageHeader";
 import LoginForm from "../../components/login-form";
 import RegisterForm from "../../components/register-form";
 
 import logoMini from "../../assets/images/BTH-mini.png";
+import TabBar from "./tab-bar";
 
 const scene = SceneMap({
   loginForm: LoginForm,
   registerForm: RegisterForm,
 });
 
-const DEFAULT_SCENE_ROUTES = [
+export const DEFAULT_SCENE_ROUTES = [
   { key: "loginForm", title: "Entrar" },
   { key: "registerForm", title: "Registrar" },
 ];

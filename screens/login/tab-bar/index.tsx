@@ -1,49 +1,53 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text } from "react-native";
+import { Props } from "react-native-tab-view/src/TabBar";
 
-
-const TabBar = (props: any) => (
+const TabBar = (props: Props<any>) => (
   <View style={styles.tabBar}>
-    {props.navigationState.routes.map((route: any, index: any) => (
-      <View
-        key={index}
-        style={[
-          styles.tabItem,
-          {
-            borderBottomColor: props.navigationState.index === index ? '#dda640' : 'transparent',
-            borderBottomRightRadius: props.navigationState.index === 1 ? 30 : 0,
-            borderBottomLeftRadius: props.navigationState.index === 0 ? 30 : 0,
-          },
-        ]}
-      >
-        <Text
-          style={styles.tabText}
-          onPress={() => props.jumpTo(route.key)}
+    {props.navigationState.routes.map(
+      (route: { title: string; key: string }, index: number) => (
+        <View
+          key={index}
+          style={[
+            styles.tabItem,
+            {
+              borderBottomColor:
+                props.navigationState.index === index
+                  ? "#dda640"
+                  : "transparent",
+              borderBottomRightRadius:
+                props.navigationState.index === 1 ? 30 : 0,
+              borderBottomLeftRadius:
+                props.navigationState.index === 0 ? 30 : 0,
+            },
+          ]}
         >
-          {route.title}
-        </Text>
-      </View>
-    ))}
+          <Text style={styles.tabText} onPress={() => props.jumpTo(route.key)}>
+            {route.title}
+          </Text>
+        </View>
+      )
+    )}
   </View>
 );
 
 const styles = StyleSheet.create({
   tabBar: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    backgroundColor: "white",
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
   },
   tabItem: {
     flex: 1,
-    alignItems: 'center',
-    borderBottomColor: 'transparent',
+    alignItems: "center",
+    borderBottomColor: "transparent",
     borderBottomWidth: 2,
   },
   tabText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     padding: 16,
   },
 });
 
-export default TabBar
+export default TabBar;
