@@ -1,4 +1,4 @@
-import { getItem, setItem } from "@/utils/asyncStorage";
+import { getItem, removeItem, setItem } from "@/utils/asyncStorage";
 import { useEffect, useState } from "react";
 
 import { setToken as setApiToken } from "@/services";
@@ -44,6 +44,10 @@ const useAuthentication = () => {
         setIsGrabbingToken(true);
       });
 
+  const cleanToken = () => {
+    removeItem(TOKEN_STORAGE_KEY);
+  };
+
   useEffect(() => {
     reloadToken();
   }, []);
@@ -55,6 +59,7 @@ const useAuthentication = () => {
     setToken,
     getToken,
     reloadToken,
+    cleanToken,
     extraHeaders: {
       Authorization: `Bearer ${bearerToken}`,
     },
