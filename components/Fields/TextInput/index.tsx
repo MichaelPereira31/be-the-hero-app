@@ -2,8 +2,9 @@ import {
   StyleSheet,
   Text,
   TextInput as RNTextInput,
-  TextInputBase,
   View,
+  TextStyle,
+  StyleProp,
 } from "react-native";
 
 interface ITextInput {
@@ -14,6 +15,9 @@ interface ITextInput {
   error?: string;
   secureTextEntry?: boolean;
   isTouched?: boolean;
+  multiline?: boolean;
+  numberOfLines?: number;
+  style?: StyleProp<TextStyle>;
 }
 
 const TextInput = ({ isTouched = true, ...props }: ITextInput) => {
@@ -21,11 +25,13 @@ const TextInput = ({ isTouched = true, ...props }: ITextInput) => {
     <View style={styles.inputSection}>
       {props.label && <Text>{props.label}</Text>}
       <RNTextInput
-        style={styles.input}
+        style={props.style ?? styles.input}
         placeholder={props.placeholder}
         value={props.value}
         onChangeText={props.setValue}
         secureTextEntry={props.secureTextEntry}
+        multiline={props.multiline}
+        numberOfLines={props.numberOfLines}
       />
       {props.error && isTouched && (
         <Text style={styles.error}>{props.error}</Text>
@@ -36,7 +42,7 @@ const TextInput = ({ isTouched = true, ...props }: ITextInput) => {
 
 const styles = StyleSheet.create({
   inputSection: {
-    marginBottom: 16,
+    marginBottom: 12,
   },
   input: {
     width: "100%",

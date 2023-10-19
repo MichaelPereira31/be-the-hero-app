@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { View, Image, StyleSheet, Text, TextInput, Alert } from "react-native";
+import React, { useState } from "react";
+import { View, Image, StyleSheet, Text, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import logoMini from "@/assets/images/BTH-mini.png";
@@ -16,6 +16,8 @@ import createOng, { ICreateOngPayload } from "@/services/ong/create";
 import UserTypeSelect from "./UserTypeSelect";
 import { useRouter } from "expo-router";
 import useAuthentication from "@/hooks/useAuthentication";
+import TextInput from "@/components/Fields/TextInput";
+import { AddressSchema, OngSchema } from "./schema";
 
 export type ICompleteRegistrationForm = ICreateOngPayload &
   ICreateAddressPayload &
@@ -26,6 +28,7 @@ export type ICompleteRegistrationField = keyof ICompleteRegistrationForm;
 const CompleteRegistration = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [fields, setFields] = useState(getUserFieldsList());
+  const [schema, setSchema] = useState(AddressSchema);
 
   const { push } = useRouter();
   const { extraHeaders } = useAuthentication();
@@ -33,20 +36,9 @@ const CompleteRegistration = () => {
   const ongFieldList = getOngFieldsList();
   const addressFieldList = getUserFieldsList();
 
-  const getIsValid = () =>
-    // only ong types will be able to be created
-    Object.keys(formik.values).reduce(
-      (prev, current) =>
-        prev && !!formik.values[current as ICompleteRegistrationField],
-      true
-    );
-
   const handleNextOrSubmit = () => {
-    const isValid = getIsValid(); // change this to be a yup validation
-    if (isValid) return formik.handleSubmit();
-
-    if (!isOngForm && isOngUser) setFields(ongFieldList);
-    else setFields(addressFieldList);
+    if (!isOngForm && isOngUser) return setFields(ongFieldList);
+    if (formik.isValid) return formik.handleSubmit();
   };
 
   const handleGoBack = () => {
@@ -113,6 +105,11 @@ const CompleteRegistration = () => {
   const formik = useFormik<ICompleteRegistrationForm>({
     initialValues: getDefaultValue(),
     onSubmit: handleSubmit,
+    validationSchema: schema,
+    validateOnChange: true,
+    validateOnBlur: true,
+    validateOnMount: false,
+    enableReinitialize: true,
   });
 
   const isOngUser = formik.values.type === "ong";
@@ -130,19 +127,22 @@ const CompleteRegistration = () => {
             </Text>
 
             {fields.map((field) => (
-              <View key={field.name}>
-                <Text>{field.label}</Text>
-                <TextInput
-                  style={
-                    field.type === "textarea" ? styles.textarea : styles.input
-                  }
-                  placeholder={field.placeholder}
-                  value={formik.values[field.name] ?? ""}
-                  onChangeText={(text) => handleInputChange(field.name, text)}
-                  multiline={field.type === "textarea"}
-                  numberOfLines={field.type === "textarea" ? 4 : undefined}
-                />
-              </View>
+              <TextInput
+                key={field.name}
+                label={field.label}
+                style={
+                  field.type === "textarea" ? styles.textarea : styles.input
+                }
+                placeholder={field.placeholder}
+                value={formik.values[field.name] ?? ""}
+                setValue={(value: string) =>
+                  handleInputChange(field.name, value)
+                }
+                error={formik.errors[field.name]}
+                isTouched={formik.touched[field.name]}
+                multiline={field.type === "textarea"}
+                numberOfLines={field.type === "textarea" ? 4 : undefined}
+              />
             ))}
 
             <View style={styles.buttonContainer}>
@@ -168,7 +168,12 @@ const CompleteRegistration = () => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <UserTypeSelect
             value={formik.values.type}
-            onChange={(value) => formik.setFieldValue("type", value)}
+            onChange={(value) => {
+              formik.setFieldValue("type", value);
+
+              if (value === "ong") setSchema(OngSchema);
+              else setSchema(AddressSchema);
+            }}
           />
         </ScrollView>
       )}
@@ -223,8 +228,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
     borderColor: "#ccc",
     borderRadius: 10,
-    marginTop: 2,
-    marginBottom: 16,
     paddingLeft: 10,
   },
 
