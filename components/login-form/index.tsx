@@ -50,16 +50,18 @@ const LoginForm = () => {
         value={formik.values.email}
         setValue={(email: string) => formik.setFieldValue("email", email)}
         error={formik.errors.email}
+        isTouched={formik.touched.email && formik.dirty}
       />
 
       <TextInput
         label="Senha:"
         value={formik.values.password}
-        setValue={(password: string) =>
-          formik.setFieldValue("password", password)
-        }
+        setValue={(password: string) => {
+          formik.setFieldValue("password", password);
+        }}
         error={formik.errors.password}
         secureTextEntry
+        isTouched={formik.touched.password}
       />
 
       <LoadingButton

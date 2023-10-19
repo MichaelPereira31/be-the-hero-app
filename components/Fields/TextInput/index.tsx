@@ -13,9 +13,10 @@ interface ITextInput {
   placeholder?: string;
   error?: string;
   secureTextEntry?: boolean;
+  isTouched?: boolean;
 }
 
-const TextInput = (props: ITextInput) => {
+const TextInput = ({ isTouched = true, ...props }: ITextInput) => {
   return (
     <View style={styles.inputSection}>
       {props.label && <Text>{props.label}</Text>}
@@ -26,7 +27,9 @@ const TextInput = (props: ITextInput) => {
         onChangeText={props.setValue}
         secureTextEntry={props.secureTextEntry}
       />
-      {props.error && <Text style={styles.error}>{props.error}</Text>}
+      {props.error && isTouched && (
+        <Text style={styles.error}>{props.error}</Text>
+      )}
     </View>
   );
 };
