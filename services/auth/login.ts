@@ -1,6 +1,7 @@
 import api from "@/services";
 import { TResponse } from "../@types/response";
 import { IHeaders } from "../@types/request";
+import { IUserType } from "../user/create";
 
 export interface ILoginPayload {
   email: string;
@@ -11,6 +12,8 @@ export interface ILoginResponse extends TResponse {
   data: {
     token: string;
     isComplete: boolean;
+    type: IUserType;
+    userId: string;
   };
 }
 

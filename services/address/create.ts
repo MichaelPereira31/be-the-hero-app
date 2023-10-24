@@ -8,6 +8,7 @@ export interface ICreateAddressPayload {
   number: string;
   neighborhood: string;
   city: string;
+  state: string;
   complement: string;
   reference: string;
 }
