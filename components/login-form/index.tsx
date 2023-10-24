@@ -8,11 +8,15 @@ import login, { ILoginPayload } from "@/services/auth/login";
 import useAuthentication from "@/hooks/useAuthentication";
 import { LoginSchema } from "./schema";
 import TextInput from "../Fields/TextInput";
+import useCache from "@/hooks/useCache";
+
+export const USER_BASE_FIELDS_KEY = "@user/base-fields";
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { setToken } = useAuthentication();
+  const { setCachedValue } = useCache(USER_BASE_FIELDS_KEY);
   const { push } = useRouter();
 
   const handleLogin = async (values: ILoginPayload) => {
@@ -22,6 +26,11 @@ const LoginForm = () => {
       login(values)
         .then(({ data }) => {
           setToken({ token: data?.data?.token, refreshToken: "" });
+          setCachedValue({
+            type: data.data.type,
+            userId: data.data.userId,
+            isComplete: data.data.isComplete,
+          });
 
           if (!data?.data?.isComplete)
             Alert.alert(
