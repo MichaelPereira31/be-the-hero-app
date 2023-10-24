@@ -57,6 +57,7 @@ const CompleteRegistration = () => {
           number: values.number,
           reference: values.reference,
           street: values.street,
+          state: values.state,
         },
         extraHeaders
       ),

@@ -20,6 +20,7 @@ export const getDefaultValue = (): ICompleteRegistrationForm => {
     number: "",
     neighborhood: "",
     city: "",
+    state: "",
     complement: "",
     reference: "",
     type: undefined,
@@ -32,6 +33,7 @@ export const getUserFieldsList = (): IFormField[] => {
     { name: "number", placeholder: "420", label: "Número:" },
     { name: "neighborhood", placeholder: "seminário", label: "Bairro:" },
     { name: "city", placeholder: "Crato", label: "Cidade: " },
+    { name: "state", placeholder: "Ceara", label: "Estado: " },
     {
       name: "complement",
       placeholder: "Casa A / Andar 3 - Apartamento 3",

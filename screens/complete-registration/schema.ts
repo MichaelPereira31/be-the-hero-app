@@ -11,6 +11,7 @@ const AddressObjectSchema = {
   neighborhood: yup.string().required(messages.required("Bairro")),
   city: yup.string().required(messages.required("Cidade")),
   complement: yup.string(),
+  state: yup.string().required(messages.required("Estado")),
   reference: yup.string().required(messages.required("Referência")),
 };
 
