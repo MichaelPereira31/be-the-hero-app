@@ -13,8 +13,9 @@ export const TOKEN_STORAGE_KEY = "@login-auth-tokens";
 const useAuthentication = () => {
   const [bearerToken, setBearerToken] = useState("");
   const [refreshToken, setRefreshToken] = useState("");
-
   const [isGrabbingToken, setIsGrabbingToken] = useState(false);
+
+  const isLogged = !!bearerToken;
 
   const setToken = async (params: TUseAuthentication) => {
     setIsGrabbingToken(true);
@@ -55,6 +56,7 @@ const useAuthentication = () => {
   }, []);
 
   return {
+    isLogged,
     isGrabbingToken,
     bearerToken,
     refreshToken,
