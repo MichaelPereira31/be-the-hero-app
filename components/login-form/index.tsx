@@ -8,6 +8,7 @@ import login, { ILoginPayload } from "@/services/auth/login";
 import useAuthentication from "@/hooks/useAuthentication";
 import { LoginSchema } from "./schema";
 import TextInput from "../Fields/TextInput";
+import { ScrollView } from "react-native-gesture-handler";
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,7 +16,7 @@ const LoginForm = () => {
   const { setToken } = useAuthentication();
   const { push } = useRouter();
 
-  const handleLogin = async (values: ILoginPayload) => {
+  const handleLogin = async (values: IPayload) => {
     if (formik.isValid) {
       setIsLoading(true);
 
@@ -45,31 +46,33 @@ const LoginForm = () => {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        label="Email:"
-        value={formik.values.email}
-        setValue={(email: string) => formik.setFieldValue("email", email)}
-        error={formik.errors.email}
-        isTouched={formik.touched.email && formik.dirty}
-      />
+      <ScrollView automaticallyAdjustKeyboardInsets>
+        <TextInput
+          label="Email:"
+          value={formik.values.email}
+          setValue={(email: string) => formik.setFieldValue("email", email)}
+          error={formik.errors.email}
+          isTouched={formik.touched.email && formik.dirty}
+        />
 
-      <TextInput
-        label="Senha:"
-        value={formik.values.password}
-        setValue={(password: string) => {
-          formik.setFieldValue("password", password);
-        }}
-        error={formik.errors.password}
-        secureTextEntry
-        isTouched={formik.touched.password}
-      />
+        <TextInput
+          label="Senha:"
+          value={formik.values.password}
+          setValue={(password: string) => {
+            formik.setFieldValue("password", password);
+          }}
+          error={formik.errors.password}
+          secureTextEntry
+          isTouched={formik.touched.password}
+        />
 
-      <LoadingButton
-        title="Login"
-        onPress={formik.handleSubmit}
-        style={styles.button}
-        isLoading={isLoading}
-      />
+        <LoadingButton
+          title="Login"
+          onPress={formik.handleSubmit}
+          style={styles.button}
+          isLoading={isLoading}
+        />
+      </ScrollView>
     </View>
   );
 };
