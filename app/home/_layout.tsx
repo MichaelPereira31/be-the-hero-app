@@ -15,18 +15,11 @@ const Layout = () => {
 
   return (
     <Tabs>
-      <Tabs.Screen
-        name="events"
-        options={{
-          ...DEFAULT_TABS_CONF,
-          href: "/home/events",
-        }}
-      />
+      <Tabs.Screen name="events" options={DEFAULT_TABS_CONF} />
       <Tabs.Screen
         name="subscribed-events"
         options={{
           ...DEFAULT_TABS_CONF,
-          href: "/home/subscribed-events",
           tabBarItemStyle: {
             display: isVoluntary ? "flex" : "none",
           },
@@ -36,16 +29,12 @@ const Layout = () => {
         name="my-events"
         options={{
           ...DEFAULT_TABS_CONF,
-          href: "/home/my-events",
           tabBarItemStyle: {
             display: isOng ? "flex" : "none",
           },
         }}
       />
-      <Tabs.Screen
-        name="profile"
-        options={{ ...DEFAULT_TABS_CONF, href: "/home/profile" }}
-      />
+      <Tabs.Screen name="profile" options={DEFAULT_TABS_CONF} />
     </Tabs>
   );
 };
