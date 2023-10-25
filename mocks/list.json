@@ -1,28 +1,30 @@
-[{
- "id":"abc12334",
- "avatar":"https://www.google.com/url?sa=i&url=https%3A%2F%2Fvilainternacional.org.br%2Fas-ongs-e-o-terceiro-setor%2F&psig=AOvVaw3q1aSkwrjJcQAHPrrG57kL&ust=1684764560493000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCKCExJvLhv8CFQAAAAAdAAAAABAE",
- "name": "Cachorrinhos atropelada",
- "subject":"Beatos ong",
- "bio":"Cachorrinha atropelada  precisando de ajuda para uma cirugia  na patinha.",
- "cost":"20.00"
-
- },
- {
-    "id":"abc123222",
-    "avatar":"https://www.google.com/url?sa=i&url=https%3A%2F%2Fvilainternacional.org.br%2Fas-ongs-e-o-terceiro-setor%2F&psig=AOvVaw3q1aSkwrjJcQAHPrrG57kL&ust=1684764560493000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCKCExJvLhv8CFQAAAAAdAAAAABAE",
+[
+  {
+    "avatar": "https://i.ytimg.com/vi/wIenKMORmk0/maxresdefault.jpg",
     "name": "Cachorrinhos atropelada",
-    "subject":"Beatos ong",
-    "bio":"Cachorrinha atropelada  precisando de ajuda para uma cirugia  na patinha.",
-    "cost":"20.00"
-   
-    },
-    {
-        "id":"abc1233333",
-        "avatar":"https://www.google.com/url?sa=i&url=https%3A%2F%2Fvilainternacional.org.br%2Fas-ongs-e-o-terceiro-setor%2F&psig=AOvVaw3q1aSkwrjJcQAHPrrG57kL&ust=1684764560493000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCKCExJvLhv8CFQAAAAAdAAAAABAE",
-        "name": "Cachorrinhos atropelada",
-        "subject":"Beatos ong",
-        "bio":"Cachorrinha atropelada  precisando de ajuda para uma cirugia  na patinha.",
-        "cost":"20.00"
-       
-    }
+    "subject": "Beatos ong",
+    "description": "Cachorrinha atropelada  precisando de ajuda para uma cirugia  na patinha.",
+    "category": "donation"
+  },
+  {
+    "avatar": "https://www.oitomeia.com.br/wp-content/uploads/2020/03/mundopets.jpg",
+    "name": "Ração para Gatos",
+    "subject": "Ong Cachorro Feliz",
+    "description": "Necessitamos de doações de reção ou dinheiro para alimentação dos gatos em situação de rua.",
+    "category": "donation"
+  },
+  {
+    "avatar": "https://jornalismosecal.com/wp-content/uploads/2018/05/Foto-Capa-da-Mat%C3%A9ria.jpg",
+    "name": "Voluntário para Animar Crianças",
+    "subject": "Movimento Alegria",
+    "description": "Procura-se voluntário para se vestir de chaves e animar um intervalo da creche São Carlos.",
+    "category": "vacany"
+  },
+  {
+    "avatar": "https://somos.lojaiplace.com.br/wp-content/uploads/2020/10/brincadeiras-dia-das-criancas-CRED-iStock_Choreograph.jpg",
+    "name": "Voluntário dia das crianças",
+    "subject": "Huge-me",
+    "description": "Precisamos de 10 jovens que se voluntariem a fazer uma tarde descontraida com as crianças do bairro seminário",
+    "category": "vacancy"
+  }
 ]
