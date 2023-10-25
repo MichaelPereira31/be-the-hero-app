@@ -24,6 +24,7 @@ const Layout = () => {
           borderTopWidth: 1,
           height: "7%",
           borderWidth: 1,
+          paddingTop: 8,
         },
       }}
     >

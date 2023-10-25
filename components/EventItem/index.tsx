@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
 
   avatar: {
-    width: 300,
+    width: "100%",
     height: 182,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
