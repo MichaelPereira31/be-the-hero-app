@@ -8,23 +8,30 @@ import mock from "../../mocks/list.json";
 
 import PageHeader from "../../components/PageHeader";
 import EventItem from "../../components/EventItem";
+import getEvents, { IEvent } from "@/services/events/getEvents";
 
 export default function HomeScreen() {
   const [isFiltersVisible, setIsFiltersVisible] = useState(false);
-  const [favorites, setFavorites] = useState([]);
-
   const [subject, setSubject] = useState("");
   const [weekDay, setWeekDay] = useState("");
   const [time, setTime] = useState("");
+  const [events, setEvents] = useState<IEvent[]>([]);
 
-  const [events, setEvents] = useState(mock);
+  const hasEvents = events.length > 0;
 
   const handleToggleFiltersVisible = () =>
     setIsFiltersVisible(!isFiltersVisible);
 
-  const fetchEvents = (query = "") => {
+  const fetchEvents = async () => {
+    getEvents().then(({ data }) => {
+      setEvents(data.data);
+    });
     console.log("fetching events...");
   };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -90,9 +97,13 @@ export default function HomeScreen() {
           paddingBottom: 16,
         }}
       >
-        {events.map((event) => (
-          <EventItem key={event.id} event={event} />
-        ))}
+        {hasEvents ? (
+          events.map((event) => <EventItem key={event.id} event={event} />)
+        ) : (
+          <View style={styles.textDontEvents}>
+            <Text>Sem eventos disponível no momento...</Text>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -147,5 +158,9 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: "#fff",
     fontSize: 16,
+  },
+
+  textDontEvents: {
+    marginTop: 60,
   },
 });
