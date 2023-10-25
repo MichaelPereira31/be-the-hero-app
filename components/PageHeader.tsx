@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
   title: {
     color: "#FFF",
     fontSize: 24,
+    fontWeight: "600",
     lineHeight: 32,
     maxWidth: 160,
     marginVertical: 40,
