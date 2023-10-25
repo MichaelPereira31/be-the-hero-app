@@ -2,7 +2,7 @@ import { getItem, setItem } from "@/utils/asyncStorage";
 import { useEffect, useState } from "react";
 
 export enum ECacheStatus {
-  STARTED = "stated",
+  STARTED = "started",
   LOADING = "loading",
   LOADED = "loaded",
   ERROR = "error",

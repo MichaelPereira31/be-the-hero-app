@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView, TextInput, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { BorderlessButton, RectButton } from "react-native-gesture-handler";
+import PlusButton from "@/components/Buttons/PlusButton";
 
 import mock from "../../mocks/list.json";
 //import api from '../../services/api';
@@ -105,6 +113,9 @@ export default function HomeScreen() {
           </View>
         )}
       </ScrollView>
+      <View style={styles.PlusButton}>
+        <PlusButton />
+      </View>
     </View>
   );
 }
@@ -117,6 +128,13 @@ const styles = StyleSheet.create({
 
   CasesList: {
     marginTop: -40,
+  },
+
+  PlusButton: {
+    position: "absolute",
+    alignSelf: "flex-end",
+    top: "90%",
+    marginRight: "7%",
   },
 
   searchForm: {
