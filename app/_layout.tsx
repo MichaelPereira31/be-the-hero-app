@@ -1,22 +1,16 @@
-import { useEffect } from "react";
-import LoginScreen from "../screens/login";
-import { Tabs, useRouter } from "expo-router";
+import { Stack } from "expo-router";
 
-export default function LoginPage() {
+const Layout = () => {
   return (
-    <Tabs>
-      <Tabs.Screen
-        name="Amor"
-        options={{
-          href: "/complete-registration",
-        }}
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="complete-registration"
+        options={{ headerShown: false }}
       />
-      <Tabs.Screen
-        name="Amizade"
-        options={{
-          href: "/home",
-        }}
-      />
-    </Tabs>
+      <Stack.Screen name="home" options={{ headerShown: false }} />
+    </Stack>
   );
-}
+};
+
+export default Layout;

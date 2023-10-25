@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView, TextInput, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { BorderlessButton, RectButton } from "react-native-gesture-handler";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "@react-navigation/native";
-import getCasos from "../../services/casos/getCasos";
+import PlusButton from "@/components/Buttons/PlusButton";
 
 import mock from "../../mocks/list.json";
 //import api from '../../services/api';
 
 import PageHeader from "../../components/PageHeader";
-import CasosItem from "../../components/CasosItem";
+import EventItem from "../../components/EventItem";
 
 export default function HomeScreen() {
   const [isFiltersVisible, setIsFiltersVisible] = useState(false);
@@ -20,38 +25,14 @@ export default function HomeScreen() {
   const [weekDay, setWeekDay] = useState("");
   const [time, setTime] = useState("");
 
-  const [casos, setCasos] = useState(mock);
-  useEffect(() => {
-    fetchCasos();
-  }, []);
+  const [events, setEvents] = useState(mock);
 
-  async function fetchCasos(query = "") {
-    const { data } = await getCasos(query);
-    setCasos(data);
-  }
-  function loadFavorites() {
-    AsyncStorage.getItem("favorites").then((response) => {
-      if (response) {
-        const favoritedTeachers = JSON.parse(response);
-        const favoritedTeachersIds = favoritedTeachers.map((teacher) => {
-          return teacher.id;
-        });
-
-        setFavorites(favoritedTeachersIds);
-      }
-    });
-  }
-
-  useFocusEffect(
-    React.useCallback(() => {
-      loadFavorites();
-      fetchCasos();
-    }, [])
-  );
-
-  function handleToggleFiltersVisible() {
+  const handleToggleFiltersVisible = () =>
     setIsFiltersVisible(!isFiltersVisible);
-  }
+
+  const fetchEvents = (query = "") => {
+    console.log("fetching events...");
+  };
 
   return (
     <View style={styles.container}>
@@ -70,7 +51,7 @@ export default function HomeScreen() {
               style={styles.input}
               value={subject}
               onChangeText={(text) => setSubject(text)}
-              placeholder="Qual local ?"
+              placeholder="Qual local?"
               placeholderTextColor="#c1bccc"
             />
 
@@ -100,7 +81,7 @@ export default function HomeScreen() {
 
             <RectButton
               style={styles.submitButton}
-              onPress={() => fetchCasos()}
+              onPress={() => fetchEvents()}
             >
               <Text style={styles.submitButtonText}>Filtrar</Text>
             </RectButton>
@@ -117,14 +98,13 @@ export default function HomeScreen() {
           paddingBottom: 16,
         }}
       >
-        {casos.map((casosI) => (
-          <CasosItem
-            key={casosI.id}
-            casos={casosI}
-            favorited={favorites.includes(casosI.id)}
-          />
+        {events.map((event) => (
+          <EventItem key={event.id} event={event} />
         ))}
       </ScrollView>
+      <View style={styles.PlusButton}>
+        <PlusButton />
+      </View>
     </View>
   );
 }
@@ -137,6 +117,13 @@ const styles = StyleSheet.create({
 
   CasesList: {
     marginTop: -40,
+  },
+
+  PlusButton: {
+    position: "absolute",
+    alignSelf: "flex-end",
+    top: "90%",
+    marginRight: "7%",
   },
 
   searchForm: {
