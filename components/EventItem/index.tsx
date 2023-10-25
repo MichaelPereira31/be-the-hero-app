@@ -2,28 +2,64 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { View, Image, Text } from "react-native";
 
-export type TCases = {
-  id: string;
-  avatar: string;
-  name: string;
-  subject: string;
-  bio: string;
-  cost: string;
+import whatsappIcon from "@/assets/images/whatsapp.png";
+import { RectButton } from "react-native-gesture-handler";
+import { IEvent } from "@/services/events/getEvents";
+import { EventCategory } from "@/constants/Enums";
+
+type TEventProps = {
+  event: IEvent;
 };
 
-type TCaseProps = {
-  event: TCases;
-};
+export default function EventItem({ event }: TEventProps) {
+  const handleChangeColor = (type: string) => {
+    switch (type) {
+      case EventCategory.Donation:
+        return "rgba(0, 255, 0, 0.5)";
 
-export default function EventItem({ event }: TCaseProps) {
+      case EventCategory.Vacancy:
+        return "rgba(255, 255, 0, 0.5)";
+
+      default:
+        return "rgba(0, 81, 255, 0.5)";
+    }
+  };
+
+  const handleCategory = (category: string) => {
+    switch (category) {
+      case EventCategory.Donation:
+        return "Doação";
+
+      case EventCategory.Vacancy:
+        return "Voluntário";
+
+      default:
+        return category;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.profile}>
         <Image style={styles.avatar} source={{ uri: event.avatar }} />
+        <View
+          style={[
+            styles.category,
+            { backgroundColor: handleChangeColor(event.category) },
+          ]}
+        >
+          <Text>{handleCategory(event.category)}</Text>
+        </View>
       </View>
       <Text style={styles.name}>{event.name}</Text>
       <Text style={styles.subject}>{event.subject}</Text>
-      <Text style={styles.bio}>{event.bio}</Text>
+      <Text style={styles.bio}>{event.description}</Text>
+
+      <View style={styles.buttonContainer}>
+        <RectButton style={styles.contactButton}>
+          <Image style={styles.contactImage} source={whatsappIcon} />
+        </RectButton>
+      </View>
     </View>
   );
 }
@@ -37,12 +73,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     overflow: "hidden",
     padding: 24,
-    elevation: 4,
   },
 
   profile: {
     flexDirection: "row",
     alignItems: "center",
+    elevation: 4,
   },
 
   avatar: {
@@ -52,6 +88,18 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     marginBottom: 10,
     backgroundColor: "#eee",
+
+    position: "relative",
+  },
+
+  category: {
+    position: "absolute",
+    right: 10,
+    top: 10,
+
+    paddingVertical: 5,
+    paddingHorizontal: 8,
+    borderRadius: 15,
   },
 
   name: {
@@ -62,35 +110,20 @@ const styles = StyleSheet.create({
   subject: {
     color: "#6a6180",
     fontSize: 14,
-    marginTop: 2,
+    marginBottom: 10,
   },
 
   bio: {
-    marginTop: 10,
+    marginBottom: 20,
     fontSize: 12,
     color: "#000",
   },
 
-  footer: {
+  buttonContainer: {
     color: "#fafafc",
     alignItems: "flex-end",
     justifyContent: "flex-end",
-    marginTop: 24,
     flexDirection: "row",
-  },
-
-  favoriteButton: {
-    backgroundColor: "#F5B234",
-    width: 56,
-    height: 56,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 8,
-  },
-
-  favorited: {
-    backgroundColor: "#e33d3d",
   },
 
   contactButton: {
@@ -104,9 +137,8 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
 
-  contactButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    marginLeft: 16,
+  contactImage: {
+    width: 24,
+    height: 24,
   },
 });
