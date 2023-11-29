@@ -15,8 +15,9 @@ import mock from "../../mocks/list.json";
 //import api from '../../services/api';
 
 import PageHeader from "../../components/PageHeader";
-import EventItem from "../../components/EventItem";
 import getEvents, { IEvent } from "@/services/events/getEvents";
+import SimpleModal from "@/components/Event/SimpleModal";
+import EventItem from "@/components/Event/EventItem";
 
 export default function HomeScreen() {
   const [isFiltersVisible, setIsFiltersVisible] = useState(false);
@@ -24,6 +25,8 @@ export default function HomeScreen() {
   const [weekDay, setWeekDay] = useState("");
   const [time, setTime] = useState("");
   const [events, setEvents] = useState<IEvent[]>([]);
+  const [eventID, setEventID] = useState<string>();
+  const [eventModal, setEventModal] = useState(false);
 
   const hasEvents = events.length > 0;
 
@@ -42,81 +45,97 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <PageHeader
-        title="Casos Disponiveis"
-        headerRight={
-          <BorderlessButton onPress={handleToggleFiltersVisible}>
-            <Feather name="filter" size={25} color="#FfF" />
-          </BorderlessButton>
-        }
-      >
-        {isFiltersVisible ? (
-          <View style={styles.searchForm}>
-            <Text style={styles.label}>Local</Text>
-            <TextInput
-              style={styles.input}
-              value={subject}
-              onChangeText={(text) => setSubject(text)}
-              placeholder="Qual local?"
-              placeholderTextColor="#c1bccc"
-            />
+    <>
+      <View style={styles.container}>
+        <PageHeader
+          title="Casos Disponiveis"
+          headerRight={
+            <BorderlessButton onPress={handleToggleFiltersVisible}>
+              <Feather name="filter" size={25} color="#FfF" />
+            </BorderlessButton>
+          }
+        >
+          {isFiltersVisible ? (
+            <View style={styles.searchForm}>
+              <Text style={styles.label}>Local</Text>
+              <TextInput
+                style={styles.input}
+                value={subject}
+                onChangeText={(text) => setSubject(text)}
+                placeholder="Qual local?"
+                placeholderTextColor="#c1bccc"
+              />
 
-            <View style={styles.inputGroup}>
-              <View style={styles.inputBlock}>
-                <Text style={styles.label}>Dia da Semana</Text>
-                <TextInput
-                  value={weekDay}
-                  onChangeText={(text) => setWeekDay(text)}
-                  style={styles.input}
-                  placeholder="Qual o dia?"
-                  placeholderTextColor="#c1bccc"
-                />
+              <View style={styles.inputGroup}>
+                <View style={styles.inputBlock}>
+                  <Text style={styles.label}>Dia da Semana</Text>
+                  <TextInput
+                    value={weekDay}
+                    onChangeText={(text) => setWeekDay(text)}
+                    style={styles.input}
+                    placeholder="Qual o dia?"
+                    placeholderTextColor="#c1bccc"
+                  />
+                </View>
+
+                <View style={styles.inputBlock}>
+                  <Text style={styles.label}>Horário</Text>
+                  <TextInput
+                    value={time}
+                    onChangeText={(text) => setTime(text)}
+                    style={styles.input}
+                    placeholder="Horário"
+                    placeholderTextColor="#c1bccc"
+                  />
+                </View>
               </View>
 
-              <View style={styles.inputBlock}>
-                <Text style={styles.label}>Horário</Text>
-                <TextInput
-                  value={time}
-                  onChangeText={(text) => setTime(text)}
-                  style={styles.input}
-                  placeholder="Horário"
-                  placeholderTextColor="#c1bccc"
-                />
-              </View>
+              <RectButton
+                style={styles.submitButton}
+                onPress={() => fetchEvents()}
+              >
+                <Text style={styles.submitButtonText}>Filtrar</Text>
+              </RectButton>
             </View>
+          ) : (
+            <View></View>
+          )}
+        </PageHeader>
 
-            <RectButton
-              style={styles.submitButton}
-              onPress={() => fetchEvents()}
-            >
-              <Text style={styles.submitButtonText}>Filtrar</Text>
-            </RectButton>
-          </View>
-        ) : (
-          <View></View>
-        )}
-      </PageHeader>
-
-      <ScrollView
-        style={styles.CasesList}
-        contentContainerStyle={{
-          paddingHorizontal: 16,
-          paddingBottom: 16,
-        }}
-      >
-        {hasEvents ? (
-          events.map((event) => <EventItem key={event.id} event={event} />)
-        ) : (
-          <View style={styles.textDontEvents}>
-            <Text>Sem eventos disponível no momento...</Text>
-          </View>
-        )}
-      </ScrollView>
-      <View style={styles.PlusButton}>
-        <PlusButton />
+        <ScrollView
+          style={styles.CasesList}
+          contentContainerStyle={{
+            paddingHorizontal: 16,
+            paddingBottom: 16,
+          }}
+        >
+          {hasEvents ? (
+            events.map((event) => (
+              <EventItem
+                key={event.id}
+                event={event}
+                setEventID={setEventID}
+                eventModal={eventModal}
+                setEventModal={setEventModal}
+              />
+            ))
+          ) : (
+            <View style={styles.textDontEvents}>
+              <Text>Sem eventos disponível no momento...</Text>
+            </View>
+          )}
+        </ScrollView>
+        <View style={styles.PlusButton}>
+          <PlusButton />
+        </View>
       </View>
-    </View>
+
+      <SimpleModal
+        eventID={eventID || ""}
+        isModalVisible={eventModal}
+        setModalVisible={setEventModal}
+      />
+    </>
   );
 }
 

@@ -40,7 +40,10 @@ const LoginForm = () => {
             );
           push(data?.data?.isComplete ? "/home" : "/complete-registration");
         })
-        .catch(() => alert("Credenciais inválidas. 😢"))
+        .catch((error: any) => {
+          console.log(error);
+          alert("Credenciais inválidas. 😢");
+        })
         .finally(() => setTimeout(() => setIsLoading(false), 2000));
     }
   };

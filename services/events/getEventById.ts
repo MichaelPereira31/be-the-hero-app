@@ -1,7 +1,11 @@
-import api from '..'
-
-const getExpensies = async (query = '') => {
-  return await api.get(`/list/${query}`)
+import api from "@/services";
+import { IEvent } from "./getEvents";
+export interface IEventData {
+  data: IEvent;
 }
 
-export default getExpensies
+const getEventById = async (eventID: string) => {
+  return await api.get<IEventData>(`/event/${eventID}`);
+};
+
+export default getEventById;

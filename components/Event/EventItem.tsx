@@ -1,66 +1,56 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { View, Image, Text } from "react-native";
+import { RectButton } from "react-native-gesture-handler";
+
+import { handleCategory, handleChangeColor } from "./utils";
+import { IEvent } from "@/services/events/getEvents";
 
 import whatsappIcon from "@/assets/images/whatsapp.png";
-import { RectButton } from "react-native-gesture-handler";
-import { IEvent } from "@/services/events/getEvents";
-import { EventCategory } from "@/constants/Enums";
 
 type TEventProps = {
   event: IEvent;
+  setEventID: (value: string) => void;
+  eventModal: boolean;
+  setEventModal: (value: boolean) => void;
 };
 
-export default function EventItem({ event }: TEventProps) {
-  const handleChangeColor = (type: string) => {
-    switch (type) {
-      case EventCategory.Donation:
-        return "rgba(0, 255, 0, 0.5)";
-
-      case EventCategory.Vacancy:
-        return "rgba(255, 255, 0, 0.5)";
-
-      default:
-        return "rgba(0, 81, 255, 0.5)";
-    }
-  };
-
-  const handleCategory = (category: string) => {
-    switch (category) {
-      case EventCategory.Donation:
-        return "Doação";
-
-      case EventCategory.Vacancy:
-        return "Voluntário";
-
-      default:
-        return category;
-    }
-  };
-
+export default function EventItem({
+  event,
+  setEventID,
+  eventModal,
+  setEventModal,
+}: TEventProps) {
   return (
-    <View style={styles.container}>
-      <View style={styles.profile}>
-        <Image style={styles.avatar} source={{ uri: event.avatar }} />
-        <View
-          style={[
-            styles.category,
-            { backgroundColor: handleChangeColor(event.category) },
-          ]}
-        >
-          <Text>{handleCategory(event.category)}</Text>
+    <TouchableOpacity
+      onPress={() => {
+        setEventID(event.id);
+        setEventModal(!eventModal);
+      }}
+    >
+      <View style={styles.container}>
+        <View style={styles.profile}>
+          <Image style={styles.avatar} source={{ uri: event.avatar }} />
+          <View
+            style={[
+              styles.category,
+              { backgroundColor: handleChangeColor(event.category) },
+            ]}
+          >
+            <Text>{handleCategory(event.category)}</Text>
+          </View>
+        </View>
+        <Text style={styles.name}>{event.name}</Text>
+        <Text style={styles.subject}>{event.subject}</Text>
+        <Text style={styles.bio}>{event.description}</Text>
+
+        <View style={styles.buttonContainer}>
+          <RectButton style={styles.contactButton}>
+            <Image style={styles.contactImage} source={whatsappIcon} />
+          </RectButton>
         </View>
       </View>
-      <Text style={styles.name}>{event.name}</Text>
-      <Text style={styles.subject}>{event.subject}</Text>
-      <Text style={styles.bio}>{event.description}</Text>
-
-      <View style={styles.buttonContainer}>
-        <RectButton style={styles.contactButton}>
-          <Image style={styles.contactImage} source={whatsappIcon} />
-        </RectButton>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
