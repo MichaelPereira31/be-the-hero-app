@@ -26,7 +26,7 @@ const CreateEventModal = ({
 
     setIsLoading(true);
     createEvent(value)
-      .then(() =>
+      .then(() => {
         Alert.alert("Evento criado com successo! 😄", "", [
           {
             text: "Continuar",
@@ -35,8 +35,10 @@ const CreateEventModal = ({
               onCreateSuccessCallback();
             },
           },
-        ])
-      )
+        ]);
+
+        formik.resetForm();
+      })
       .catch(() =>
         Alert.alert(
           "Error! ❌",
@@ -52,7 +54,8 @@ const CreateEventModal = ({
     validationSchema: createEventSchema,
     enableReinitialize: true,
     validateOnChange: true,
-    validateOnMount: false,
+    validateOnMount: true,
+    validateOnBlur: true,
   });
 
   const handleInputChange = (
@@ -75,7 +78,6 @@ const CreateEventModal = ({
             value={formik.values[field.name] ?? ""}
             setValue={(value: string) => handleInputChange(field.name, value)}
             error={formik.errors[field.name]?.toString()}
-            isTouched={!!formik.touched[field.name]}
             multiline={field.type === "textarea"}
             numberOfLines={field.type === "textarea" ? 4 : undefined}
           />
@@ -108,7 +110,6 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 10,
     paddingLeft: 10,
-    marginBottom: 10,
   },
 
   textarea: {
@@ -120,7 +121,6 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 10,
     paddingLeft: 10,
-    marginBottom: 10,
   },
 });
 
