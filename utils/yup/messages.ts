@@ -6,6 +6,7 @@ const addressNumber = (name: string) =>
   `${name} deve seguir um desses modelos: 200, 200A`;
 const phoneNumber = (name: string) =>
   `${name} deve ser um número de telefone válido.`;
+const url = (name: string) => `${name} deve ser uma URL.`;
 
 const messages = {
   required,
@@ -13,6 +14,7 @@ const messages = {
   phoneNumber,
   addressNumber,
   min,
+  url,
 };
 
 export default messages;

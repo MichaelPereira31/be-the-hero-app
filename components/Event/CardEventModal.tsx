@@ -14,6 +14,8 @@ type TEventProps = {
 export default function CardEventModal({ event }: TEventProps) {
   const hasEvent = !!event;
 
+  console.log(event);
+
   return (
     <>
       {hasEvent ? (

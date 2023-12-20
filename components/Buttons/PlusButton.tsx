@@ -2,9 +2,13 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
 
-function Plus() {
+interface IPlus {
+  onPress: () => void;
+}
+
+function Plus({ onPress }: IPlus) {
   return (
-    <TouchableOpacity style={[styles.iconTabRound]}>
+    <TouchableOpacity style={[styles.iconTabRound]} onPress={onPress}>
       <Feather name="plus" size={24} color="white" />
     </TouchableOpacity>
   );

@@ -18,6 +18,8 @@ import PageHeader from "../../components/PageHeader";
 import getEvents, { IEvent } from "@/services/events/getEvents";
 import SimpleModal from "@/components/Event/SimpleModal";
 import EventItem from "@/components/Event/EventItem";
+import useModal from "@/hooks/useModal";
+import CreateEventModal from "@/components/CreateEventModal";
 
 export default function HomeScreen() {
   const [isFiltersVisible, setIsFiltersVisible] = useState(false);
@@ -27,6 +29,7 @@ export default function HomeScreen() {
   const [events, setEvents] = useState<IEvent[]>([]);
   const [eventID, setEventID] = useState<string>();
   const [eventModal, setEventModal] = useState(false);
+  const [createEventModalConf, createEventModaltoggle] = useModal();
 
   const hasEvents = events.length > 0;
 
@@ -37,7 +40,6 @@ export default function HomeScreen() {
     getEvents().then(({ data }) => {
       setEvents(data.data);
     });
-    console.log("fetching events...");
   };
 
   useEffect(() => {
@@ -126,7 +128,7 @@ export default function HomeScreen() {
           )}
         </ScrollView>
         <View style={styles.PlusButton}>
-          <PlusButton />
+          <PlusButton onPress={createEventModaltoggle} />
         </View>
       </View>
 
@@ -134,6 +136,11 @@ export default function HomeScreen() {
         eventID={eventID || ""}
         isModalVisible={eventModal}
         setModalVisible={setEventModal}
+      />
+
+      <CreateEventModal
+        {...createEventModalConf}
+        onCreateSuccessCallback={fetchEvents}
       />
     </>
   );

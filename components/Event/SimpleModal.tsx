@@ -4,6 +4,7 @@ import Modal from "react-native-modal";
 import CardEventModal from "./CardEventModal";
 import getEventById from "@/services/events/getEventById";
 import { IEvent } from "@/services/events/getEvents";
+import BaseModal from "../BaseModal";
 
 type TSimpleModal = {
   eventID: string;
@@ -21,9 +22,7 @@ export default function SimpleModal({
   const fetchEvent = async () => {
     getEventById(eventID).then(({ data }) => {
       setEvent(data.data);
-      console.log(data.data);
     });
-    console.log("fetching event...");
   };
 
   useEffect(() => {
@@ -31,18 +30,13 @@ export default function SimpleModal({
   }, []);
 
   return (
-    <Modal
-      isVisible={isModalVisible}
-      onBackdropPress={() => setModalVisible(false)}
+    <BaseModal
+      isModalVisible={isModalVisible}
+      setIsModalVisible={setModalVisible}
+      removeContainer
     >
-      <TouchableOpacity
-        style={styles.closeButton}
-        onPress={() => setModalVisible(false)}
-      >
-        <Text>X</Text>
-      </TouchableOpacity>
       <CardEventModal event={event} />
-    </Modal>
+    </BaseModal>
   );
 }
 
